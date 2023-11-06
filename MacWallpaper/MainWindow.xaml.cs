@@ -27,7 +27,7 @@ namespace MacWallpaper
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            ModelHelper.Load();
+            var model= ModelHelper.Load();
         }
     }
 }

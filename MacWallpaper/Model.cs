@@ -18,7 +18,7 @@ namespace MacWallpaper
             return "";
         }
 
-        public static void Load()
+        public static Rootobject Load()
         {
             string v = File.ReadAllText(@"data\Localizable.json");
             var lang=JSONParser.FromJson<Dictionary<string,string>>(v);
@@ -26,6 +26,7 @@ namespace MacWallpaper
 
             string v1 = File.ReadAllText(@"data\entries.json");
             var model=JSONParser.FromJson<Rootobject>(v1);
+            return model;
         }
     }
 
