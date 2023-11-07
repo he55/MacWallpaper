@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using TinyJson;
@@ -11,6 +12,7 @@ namespace MacWallpaper
     public static class ModelHelper
     {
         static Dictionary<string, string> s_dict;
+        public static Asset[] s_assets;
         public static string GetString(string name)
         {
             if(s_dict.TryGetValue(name,out string value))
@@ -26,6 +28,7 @@ namespace MacWallpaper
 
             string v1 = File.ReadAllText(@"data\entries.json");
             var model=JSONParser.FromJson<Rootobject>(v1);
+            s_assets = model.assets;
             return model;
         }
     }
@@ -42,7 +45,7 @@ namespace MacWallpaper
     public class Category
     {
         public string previewImage { get; set; }
-        public Subcategory[] subcategories { get; set; }
+        public Category[] subcategories { get; set; }
         public string id { get; set; }
         public int preferredOrder { get; set; }
         public string representativeAssetID { get; set; }
@@ -63,29 +66,11 @@ namespace MacWallpaper
                 return ModelHelper.GetString(localizedDescriptionKey);
             }
         }
-    }
-
-    public class Subcategory
-    {
-        public string previewImage { get; set; }
-        public string localizedDescriptionKey { get; set; }
-        public string representativeAssetID { get; set; }
-        public string id { get; set; }
-        public string localizedNameKey { get; set; }
-        public int preferredOrder { get; set; }
-
-        public string str1
+        public Asset[] assets
         {
             get
             {
-                return ModelHelper.GetString(localizedNameKey);
-            }
-        }
-        public string str2
-        {
-            get
-            {
-                return ModelHelper.GetString(localizedDescriptionKey);
+                return ModelHelper.s_assets.Where(x=>x.categories.Contains(id)).ToArray();
             }
         }
     }
@@ -100,6 +85,7 @@ namespace MacWallpaper
         public string localizedNameKey { get; set; }
         public bool includeInShuffle { get; set; }
         public string accessibilityLabel { get; set; }
+        [DataMember(Name = "url-4K-SDR-240FPS")]
         public string url4KSDR240FPS { get; set; }
         public string id { get; set; }
         public int preferredOrder { get; set; }
