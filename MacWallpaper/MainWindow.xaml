@@ -5,9 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MacWallpaper"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+         xmlns:ui="http://schemas.modernwpf.com/2019"
+        ui:WindowHelper.UseModernWindowStyle="True">
     <Grid>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="400,179,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <ui:GridView x:Name="gridView" Margin="0,0,132,0">
+            <ui:GridView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <Image Source="{Binding previewImage}" Width="150" Height="100"/>
+                        <TextBlock Text="{Binding str1}" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ui:GridView.ItemTemplate>
+        </ui:GridView>
+        <Button Content="Button" Margin="704,104,0,0" VerticalAlignment="Top" Click="Button_Click"/>
 
     </Grid>
 </Window>
