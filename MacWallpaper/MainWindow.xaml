@@ -9,7 +9,7 @@
          xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True">
     <Grid>
-        <ui:GridView x:Name="gridView" Margin="0,0,132,0" HorizontalAlignment="Left" Width="500">
+        <ui:GridView x:Name="gridView" HorizontalAlignment="Left" Width="500">
             <ui:GridView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Width="107" Margin="5">
