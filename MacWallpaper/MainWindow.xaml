@@ -18,7 +18,7 @@
                                 <ImageBrush ImageSource="{Binding previewImage}"/>
                             </Border.Background>
                         </Border>
-                        <TextBlock Text="{Binding str1}" HorizontalAlignment="Center" FontSize="10" FontWeight="Bold" Margin="0,2,0,0"/>
+                        <TextBlock Text="{Binding str1}" TextWrapping="Wrap" HorizontalAlignment="Center" FontSize="10" FontWeight="Bold" Margin="0,2,0,0"/>
                     </StackPanel>
                 </DataTemplate>
             </ui:GridView.ItemTemplate>
