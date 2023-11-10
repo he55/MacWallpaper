@@ -19,7 +19,7 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="500"/>
         </Grid.ColumnDefinitions>
-        <ListBox x:Name="listBox" SelectionChanged="listBox_SelectionChanged">
+        <ListBox x:Name="listBox" >
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding str1}"/>
@@ -27,7 +27,9 @@
             </ListBox.ItemTemplate>
         </ListBox>
         
-        <ui:GridView x:Name="gridView" ItemContainerStyle="{StaticResource GridViewItemStyle}" HorizontalAlignment="Left" Width="500" Grid.Column="1">
+        <ui:GridView x:Name="gridView" ItemContainerStyle="{StaticResource GridViewItemStyle}" 
+                     HorizontalAlignment="Left" Width="500" Grid.Column="1"
+                     ItemsSource="{Binding SelectedItem.assets, ElementName=listBox}">
             <ui:GridView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Width="107" Margin="5">
