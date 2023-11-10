@@ -48,6 +48,8 @@
                         <TextBlock Text="显示为屏幕保护程序"/>
                         <ui:ToggleSwitch OnContent="" OffContent="" IsOn="True"/>
                     </StackPanel>
+                    <ui:ProgressBar Value="{Binding progress}"/>
+                    <Button Content="下载" Click="Button_Click_1"/>
                 </StackPanel>
             </Grid>
             <ui:GridView x:Name="gridView" ItemContainerStyle="{StaticResource GridViewItemStyle}" 

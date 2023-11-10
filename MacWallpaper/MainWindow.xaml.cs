@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -125,7 +127,7 @@ namespace MacWallpaper
                 ass.filepath = v;
             };
             webClient.DownloadProgressChanged += (object sender, DownloadProgressChangedEventArgs e)=> {
-                ass.progress = e.BytesReceived / (double)e.TotalBytesToReceive;
+                ass.progress = e.BytesReceived / (double)e.TotalBytesToReceive*100;
             };
             await webClient.DownloadFileTaskAsync(ass.downloadurl, v);
         }
@@ -139,6 +141,12 @@ namespace MacWallpaper
 
             Button_Click2(null, null);
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Ass selectedItem = (Ass) gridView.SelectedItem;
+            Download4kWallpaper(selectedItem);
+        }
     }
 
     public class Cate
@@ -147,14 +155,33 @@ namespace MacWallpaper
         public string des { get; set; }
         public List<Ass> assets { get; set; }
     }
-    public class Ass
+    public class Ass:INotifyPropertyChanged
     {
+        private double progress1;
+
         public string str1 { get; set; }
         public string previewImage { get; set; }
         public string downloadurl { get; set; }
 
         public string filepath { get; set; }
         public bool isDownload { get; set; }
-        public double progress { get; set; }
+        public double progress
+        {
+            get => progress1; 
+            set
+            {
+                progress1 = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // Create the OnPropertyChanged method to raise the event
+        // The calling member's name will be used as the parameter.
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
     }
 }
