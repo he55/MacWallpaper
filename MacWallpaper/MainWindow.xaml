@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:MacWallpaper"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="640"
+        Loaded="Window_Loaded"
          xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True">
     <Window.Resources>
@@ -14,7 +15,19 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <ui:GridView x:Name="gridView" ItemContainerStyle="{StaticResource GridViewItemStyle}" HorizontalAlignment="Left" Width="500">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="500"/>
+        </Grid.ColumnDefinitions>
+        <ListBox x:Name="listBox" SelectionChanged="listBox_SelectionChanged">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding str1}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        
+        <ui:GridView x:Name="gridView" ItemContainerStyle="{StaticResource GridViewItemStyle}" HorizontalAlignment="Left" Width="500" Grid.Column="1">
             <ui:GridView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Width="107" Margin="5">
@@ -28,7 +41,6 @@
                 </DataTemplate>
             </ui:GridView.ItemTemplate>
         </ui:GridView>
-        <Button Content="Button" Margin="538,36,0,0" VerticalAlignment="Top" Click="Button_Click"/>
 
     </Grid>
 </Window>

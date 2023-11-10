@@ -37,8 +37,7 @@ namespace MacWallpaper
             }
 
             var model= ModelHelper.Load();
-            Asset[] assets = model.categories[0].assets;
-            foreach ( Asset asset in assets )
+            foreach ( Asset asset in model.assets )
             {
                 string v = new Uri(asset.previewImage).Segments.Last();
                 string v1 = System.IO.Path.Combine(imgsPath, v);
@@ -49,7 +48,20 @@ namespace MacWallpaper
                 }
                 asset.previewImage = v2;
             }
-            gridView.ItemsSource = assets;
+
+            listBox.ItemsSource=model.categories; 
+            listBox.SelectedIndex=0;
+        }
+
+        private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedItem =(Category) listBox.SelectedItem;
+            gridView.ItemsSource = selectedItem?.assets;
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            Button_Click(null, null);
         }
     }
 }
