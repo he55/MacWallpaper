@@ -81,14 +81,17 @@ namespace MacWallpaper
                         str1 = item2.str1,
                         previewImage=item2.previewImage,
                         downloadurl=item2.url4KSDR240FPS,
-                        isDownload=File.Exists(v),
                     };
+                    if (File.Exists(v))
+                    {
+                        ass.isDownload = true;
+                        ass.filepath = v;
+                    }
                     asses.Add(ass);
                     cate.assets.Add(ass);
                 }
                 cates.Add(cate);
             }
-
 
 
             listBox.ItemsSource = cates;
@@ -113,6 +116,20 @@ namespace MacWallpaper
             return v2;
         }
 
+        async void Download4kWallpaper(Ass ass)
+        {
+            string v = GetUrlFilePath(ass.downloadurl, _downloadPath);
+            WebClient webClient = new WebClient();
+            webClient.DownloadFileCompleted += (object sender, System.ComponentModel.AsyncCompletedEventArgs e)=> { 
+                ass.isDownload = true;
+                ass.filepath = v;
+            };
+            webClient.DownloadProgressChanged += (object sender, DownloadProgressChangedEventArgs e)=> {
+                ass.progress = e.BytesReceived / (double)e.TotalBytesToReceive;
+            };
+            await webClient.DownloadFileTaskAsync(ass.downloadurl, v);
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if (!Directory.Exists(_downloadPath))
@@ -134,8 +151,9 @@ namespace MacWallpaper
     {
         public string str1 { get; set; }
         public string previewImage { get; set; }
-
         public string downloadurl { get; set; }
+
+        public string filepath { get; set; }
         public bool isDownload { get; set; }
         public double progress { get; set; }
     }
