@@ -22,6 +22,8 @@ namespace MacWallpaper
     /// </summary>
     public partial class MainWindow : Window
     {
+        string _downloadPath = @"C:\Users\admin\Documents\4kwallpaper";
+
         public MainWindow()
         {
             InitializeComponent();
@@ -74,10 +76,12 @@ namespace MacWallpaper
                 cate.assets = new List<Ass>();
                 foreach (var item2 in item.assets)
                 {
+                    string v = GetUrlFilePath(item2.url4KSDR240FPS, _downloadPath);
                     Ass ass = new Ass { 
                         str1 = item2.str1,
                         previewImage=item2.previewImage,
                         downloadurl=item2.url4KSDR240FPS,
+                        isDownload=File.Exists(v),
                     };
                     asses.Add(ass);
                     cate.assets.Add(ass);
@@ -92,9 +96,7 @@ namespace MacWallpaper
 
             foreach (var asset in asses)
             {
-                string v = new Uri(asset.previewImage).Segments.Last();
-                string v1 = System.IO.Path.Combine(imgsPath, v);
-                string v2 = System.IO.Path.GetFullPath(v1);
+                string v2 = GetUrlFilePath(asset.previewImage,imgsPath);
                 if (!File.Exists(v2))
                 {
                     await webClient.DownloadFileTaskAsync(asset.previewImage, v2);
@@ -103,8 +105,21 @@ namespace MacWallpaper
             }
         }
 
+        string GetUrlFilePath(string url,string path)
+        {
+            string v = new Uri(url).Segments.Last();
+            string v1 = System.IO.Path.Combine(path, v);
+            string v2 = System.IO.Path.GetFullPath(v1);
+            return v2;
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            if (!Directory.Exists(_downloadPath))
+            {
+                Directory.CreateDirectory(_downloadPath);
+            }
+
             Button_Click2(null, null);
         }
     }
