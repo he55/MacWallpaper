@@ -24,7 +24,6 @@ namespace MacWallpaper
     /// </summary>
     public partial class MainWindow : Window
     {
-        string _downloadPath = @"C:\Users\admin\Documents\4kwallpaper";
 
         public MainWindow()
         {
@@ -68,6 +67,8 @@ namespace MacWallpaper
 
             var model = ModelHelper.Load();
 
+            DownloadButtonCommand command = new DownloadButtonCommand();
+
             List<Ass> asses = new List<Ass>();
             List<Cate> cates = new List<Cate>();
             foreach (var item in model.categories)
@@ -78,15 +79,16 @@ namespace MacWallpaper
                 cate.assets = new List<Ass>();
                 foreach (var item2 in item.assets)
                 {
-                    string v = GetUrlFilePath(item2.url4KSDR240FPS, _downloadPath);
+                    string v = Helper.GetUrlFilePath(item2.url4KSDR240FPS, Helper._downloadPath);
                     Ass ass = new Ass { 
                         str1 = item2.str1,
                         previewImage=item2.previewImage,
                         downloadurl=item2.url4KSDR240FPS,
+                        DownloadCommand = command,
                     };
                     if (File.Exists(v))
                     {
-                        ass.isDownload = true;
+                        ass.isDownload1 = true;
                         ass.filepath = v;
                     }
                     asses.Add(ass);
@@ -101,7 +103,7 @@ namespace MacWallpaper
 
             foreach (var asset in asses)
             {
-                string v2 = GetUrlFilePath(asset.previewImage,imgsPath);
+                string v2 = Helper.GetUrlFilePath(asset.previewImage,imgsPath);
                 if (!File.Exists(v2))
                 {
                     await webClient.DownloadFileTaskAsync(asset.previewImage, v2);
@@ -110,42 +112,32 @@ namespace MacWallpaper
             }
         }
 
-        string GetUrlFilePath(string url,string path)
-        {
-            string v = new Uri(url).Segments.Last();
-            string v1 = System.IO.Path.Combine(path, v);
-            string v2 = System.IO.Path.GetFullPath(v1);
-            return v2;
-        }
-
-        async void Download4kWallpaper(Ass ass)
-        {
-            string v = GetUrlFilePath(ass.downloadurl, _downloadPath);
-            WebClient webClient = new WebClient();
-            webClient.DownloadFileCompleted += (object sender, System.ComponentModel.AsyncCompletedEventArgs e)=> { 
-                ass.isDownload = true;
-                ass.filepath = v;
-            };
-            webClient.DownloadProgressChanged += (object sender, DownloadProgressChangedEventArgs e)=> {
-                ass.progress = e.BytesReceived / (double)e.TotalBytesToReceive*100;
-            };
-            await webClient.DownloadFileTaskAsync(ass.downloadurl, v);
-        }
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            Helper.CreateFolder();
+            Button_Click2(null, null);
+        }
+    }
+
+    public class Helper
+    {
+        public static string _downloadPath = @"C:\Users\admin\Documents\4kwallpaper";
+
+        public static void CreateFolder()
         {
             if (!Directory.Exists(_downloadPath))
             {
                 Directory.CreateDirectory(_downloadPath);
             }
 
-            Button_Click2(null, null);
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        public static string GetUrlFilePath(string url, string path)
         {
-            Ass selectedItem = (Ass) gridView.SelectedItem;
-            Download4kWallpaper(selectedItem);
+            string v = new Uri(url).Segments.Last();
+            string v1 = System.IO.Path.Combine(path, v);
+            string v2 = System.IO.Path.GetFullPath(v1);
+            return v2;
         }
     }
 
@@ -158,13 +150,23 @@ namespace MacWallpaper
     public class Ass:INotifyPropertyChanged
     {
         private double progress1;
+        internal bool isDownload1;
 
         public string str1 { get; set; }
         public string previewImage { get; set; }
         public string downloadurl { get; set; }
 
         public string filepath { get; set; }
-        public bool isDownload { get; set; }
+        public bool isDownload
+        {
+            get => isDownload1; 
+            set
+            {
+                isDownload1 = value;
+                OnPropertyChanged();
+                CommandManager.InvalidateRequerySuggested();
+            }
+        }
         public double progress
         {
             get => progress1; 
@@ -175,6 +177,25 @@ namespace MacWallpaper
             }
         }
 
+        public ICommand DownloadCommand { get; set; }
+
+
+        public async void Download4kWallpaper()
+        {
+            Ass ass = this;
+            string v = Helper.GetUrlFilePath(ass.downloadurl, Helper._downloadPath);
+            WebClient webClient = new WebClient();
+            webClient.DownloadFileCompleted += (object sender, System.ComponentModel.AsyncCompletedEventArgs e) => {
+                ass.isDownload = true;
+                ass.filepath = v;
+            };
+            webClient.DownloadProgressChanged += (object sender, DownloadProgressChangedEventArgs e) => {
+                ass.progress = e.BytesReceived / (double)e.TotalBytesToReceive * 100;
+            };
+            await webClient.DownloadFileTaskAsync(ass.downloadurl, v);
+        }
+
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         // Create the OnPropertyChanged method to raise the event
@@ -182,6 +203,30 @@ namespace MacWallpaper
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+    }
+
+    public class DownloadButtonCommand : ICommand
+    {
+        //public event EventHandler CanExecuteChanged;
+
+        public event EventHandler CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
+
+        public bool CanExecute(object parameter)
+        {
+            if(parameter is Ass ass)
+                return !ass.isDownload;
+            return false;
+        }
+
+        public void Execute(object parameter)
+        {
+            if(parameter is Ass ass) 
+                ass.Download4kWallpaper();
         }
     }
 }
