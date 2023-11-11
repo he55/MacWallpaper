@@ -32,7 +32,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Grid DataContext="{Binding SelectedItem, ElementName=gridView}" Margin="20,10">
+            <Grid x:Name="gridHeader" Margin="20,10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
@@ -54,7 +54,9 @@
             </Grid>
             <ui:GridView x:Name="gridView" ItemContainerStyle="{StaticResource GridViewItemStyle}" 
                      HorizontalAlignment="Left" Width="500" 
-                     ItemsSource="{Binding SelectedItem.assets, ElementName=listBox}" Grid.Row="1">
+                     ItemsSource="{Binding SelectedItem.assets, ElementName=listBox}"
+                         SelectionChanged="gridView_SelectionChanged"
+                         Grid.Row="1">
                 <ui:GridView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Width="107" Margin="5">

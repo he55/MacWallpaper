@@ -117,6 +117,15 @@ namespace MacWallpaper
             Helper.CreateFolder();
             Button_Click2(null, null);
         }
+
+        private void gridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            object selectedItem = gridView.SelectedItem;
+            if (selectedItem != null)
+            {
+                gridHeader.DataContext = selectedItem;
+            }
+        }
     }
 
     public class Helper
