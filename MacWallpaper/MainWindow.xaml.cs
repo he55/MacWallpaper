@@ -24,53 +24,19 @@ namespace MacWallpaper
     /// </summary>
     public partial class MainWindow : Window
     {
-
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private async void LoadData()
         {
-            WebClient webClient = new WebClient();
-            string imgsPath = "images";
-            if(!Directory.Exists(imgsPath))
-            {
-                Directory.CreateDirectory(imgsPath);
-            }
-
-            var model= ModelHelper.Load();
-            listBox.ItemsSource=model.categories; 
-            listBox.SelectedIndex=0;
-
-            foreach ( Asset asset in model.assets )
-            {
-                string v = new Uri(asset.previewImage).Segments.Last();
-                string v1 = System.IO.Path.Combine(imgsPath, v);
-                string v2 = System.IO.Path.GetFullPath(v1);
-                if(!File.Exists(v2))
-                {
-                   await webClient.DownloadFileTaskAsync(asset.previewImage, v2);
-                }
-                asset.previewImage = v2;
-            }
-        }
-
-        private async void Button_Click2(object sender, RoutedEventArgs e)
-        {
-            WebClient webClient = new WebClient();
-            string imgsPath = "images";
-            if (!Directory.Exists(imgsPath))
-            {
-                Directory.CreateDirectory(imgsPath);
-            }
-
             var model = ModelHelper.Load();
-
-            DownloadButtonCommand command = new DownloadButtonCommand();
 
             List<Ass> asses = new List<Ass>();
             List<Cate> cates = new List<Cate>();
+            DownloadButtonCommand command = new DownloadButtonCommand();
+
             foreach (var item in model.categories)
             {
                 Cate cate = new Cate();
@@ -101,9 +67,12 @@ namespace MacWallpaper
             listBox.ItemsSource = cates;
             listBox.SelectedIndex = 0;
 
+
+            WebClient webClient = new WebClient();
+
             foreach (var asset in asses)
             {
-                string v2 = Helper.GetUrlFilePath(asset.previewImage,imgsPath);
+                string v2 = Helper.GetUrlFilePath(asset.previewImage,Helper.imgsPath);
                 if (!File.Exists(v2))
                 {
                     await webClient.DownloadFileTaskAsync(asset.previewImage, v2);
@@ -115,7 +84,7 @@ namespace MacWallpaper
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             Helper.CreateFolder();
-            Button_Click2(null, null);
+            LoadData();
         }
 
         private void gridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -131,6 +100,7 @@ namespace MacWallpaper
     public class Helper
     {
         public static string _downloadPath = @"C:\Users\admin\Documents\4kwallpaper";
+       public static string imgsPath = "images";
 
         public static void CreateFolder()
         {
@@ -139,6 +109,10 @@ namespace MacWallpaper
                 Directory.CreateDirectory(_downloadPath);
             }
 
+            if (!Directory.Exists(imgsPath))
+            {
+                Directory.CreateDirectory(imgsPath);
+            }
         }
 
         public static string GetUrlFilePath(string url, string path)
