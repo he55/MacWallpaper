@@ -24,6 +24,8 @@ namespace MacWallpaper
     /// </summary>
     public partial class MainWindow : Window
     {
+        Ass _lastSelectedItem;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -89,9 +91,14 @@ namespace MacWallpaper
 
         private void gridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            object selectedItem = gridView.SelectedItem;
+            Ass selectedItem = (Ass)gridView.SelectedItem;
             if (selectedItem != null)
             {
+                if(_lastSelectedItem != null)
+                    _lastSelectedItem.isSelected = false;
+
+                _lastSelectedItem = selectedItem;
+                selectedItem.isSelected = true;
                 gridHeader.DataContext = selectedItem;
             }
         }
@@ -134,6 +141,7 @@ namespace MacWallpaper
     {
         private double progress1;
         internal bool isDownload1;
+        private bool isSelected1;
 
         public string str1 { get; set; }
         public string previewImage { get; set; }
@@ -156,6 +164,15 @@ namespace MacWallpaper
             set
             {
                 progress1 = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool isSelected
+        {
+            get => isSelected1; 
+            set
+            {
+                isSelected1 = value;
                 OnPropertyChanged();
             }
         }
