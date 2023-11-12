@@ -5,33 +5,32 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MacWallpaper" xmlns:ui="http://schemas.modernwpf.com/2019"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="120" d:DesignWidth="800">
     <UserControl.Resources>
         <local:DownloadButtonVisibilityConverter x:Key="converter1"/>
         <local:ProgressVisibilityConverter x:Key="converter2"/>
     </UserControl.Resources>
     <Grid>
-        <Grid x:Name="gridHeader" Margin="20,10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Border CornerRadius="4" Width="107" Height="65">
-                <Border.Background>
-                    <ImageBrush ImageSource="{Binding previewImage}"/>
-                </Border.Background>
-            </Border>
-            <StackPanel Grid.Column="1">
-                <TextBlock Text="{Binding str1}" />
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="显示为屏幕保护程序"/>
-                    <ui:ToggleSwitch OnContent="" OffContent="" IsOn="True"/>
-                </StackPanel>
-                <ui:ProgressBar Value="{Binding progress}" Visibility="{Binding downloadState, Converter={StaticResource converter2}}"/>
-                <Button Content="下载" Command="{Binding DownloadCommand}" CommandParameter="{Binding}" 
-                            Visibility="{Binding downloadState, Converter={StaticResource converter1}}"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Border CornerRadius="6" Width="128.4" Height="78">
+            <Border.Background>
+                <ImageBrush ImageSource="{Binding previewImage}"/>
+            </Border.Background>
+        </Border>
+        <StackPanel Grid.Column="1" Margin="20,0,0,0">
+            <TextBlock Text="{Binding str1}" />
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="显示为屏幕保护程序"/>
+                <ui:ToggleSwitch OnContent="" OffContent="" IsOn="True" Margin="20,0"/>
             </StackPanel>
-        </Grid>
-
+            <DockPanel>
+                <Button Content="下载" Command="{Binding DownloadCommand}" CommandParameter="{Binding}" 
+                     Visibility="{Binding downloadState, Converter={StaticResource converter1}}"/>
+                <ui:ProgressBar Value="{Binding progress}" Visibility="{Binding downloadState, Converter={StaticResource converter2}}" Margin="20,0"/>
+            </DockPanel>
+        </StackPanel>
     </Grid>
 </UserControl>

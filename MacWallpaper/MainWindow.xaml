@@ -22,7 +22,7 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <local:MyHeaderControl x:Name="myHeaderControl" DockPanel.Dock="Top" Height="102"/>
+        <local:MyHeaderControl x:Name="myHeaderControl" DockPanel.Dock="Top" Height="102" Margin="20,10"/>
         <ui:GridView x:Name="gridView" ItemContainerStyle="{StaticResource GridViewItemStyle}" Width="500" 
            ItemsSource="{Binding SelectedItem.assets, ElementName=listBox}" SelectionChanged="gridView_SelectionChanged">
             <ui:GridView.ItemTemplate>
