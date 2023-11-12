@@ -13,6 +13,8 @@
         <Style x:Key="GridViewItemStyle" TargetType="ui:GridViewItem" BasedOn="{StaticResource MyGridViewItem}">
             <Setter Property="VerticalContentAlignment" Value="Top"/>
         </Style>
+        <local:DownloadButtonVisibilityConverter x:Key="converter1"/>
+        <local:ProgressVisibilityConverter x:Key="converter2"/>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -48,8 +50,9 @@
                         <TextBlock Text="显示为屏幕保护程序"/>
                         <ui:ToggleSwitch OnContent="" OffContent="" IsOn="True"/>
                     </StackPanel>
-                    <ui:ProgressBar Value="{Binding progress}"/>
-                    <Button Content="下载" Command="{Binding DownloadCommand}" CommandParameter="{Binding}"/>
+                    <ui:ProgressBar Value="{Binding progress}" Visibility="{Binding downloadState, Converter={StaticResource converter2}}"/>
+                    <Button Content="下载" Command="{Binding DownloadCommand}" CommandParameter="{Binding}" 
+                            Visibility="{Binding downloadState, Converter={StaticResource converter1}}"/>
                 </StackPanel>
             </Grid>
             <ui:GridView x:Name="gridView" ItemContainerStyle="{StaticResource GridViewItemStyle}" 

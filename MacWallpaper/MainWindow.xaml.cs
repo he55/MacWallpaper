@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -128,6 +129,36 @@ namespace MacWallpaper
             string v1 = System.IO.Path.Combine(path, v);
             string v2 = System.IO.Path.GetFullPath(v1);
             return v2;
+        }
+    }
+
+    public class DownloadButtonVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if(value is DownloadState downloadState)
+                return (downloadState== DownloadState.none||downloadState== DownloadState.downloading)?Visibility.Visible:Visibility.Collapsed;
+            throw new NotImplementedException();
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class ProgressVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is DownloadState downloadState)
+                return downloadState == DownloadState.downloading ? Visibility.Visible : Visibility.Collapsed;
+            throw new NotImplementedException();
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
     public enum DownloadState
