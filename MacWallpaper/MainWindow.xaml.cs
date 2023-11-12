@@ -56,7 +56,7 @@ namespace MacWallpaper
                     };
                     if (File.Exists(v))
                     {
-                        ass.isDownload1 = true;
+                        ass.downloadState1 = DownloadState.downloaded;
                         ass.filepath = v;
                     }
                     asses.Add(ass);
@@ -130,7 +130,12 @@ namespace MacWallpaper
             return v2;
         }
     }
-
+    public enum DownloadState
+    {
+        none,
+        downloading,
+        downloaded
+    }
     public class Cate
     {
         public string str1 { get; set; }
@@ -140,20 +145,20 @@ namespace MacWallpaper
     public class Ass:INotifyPropertyChanged
     {
         private double progress1;
-        internal bool isDownload1;
         private bool isSelected1;
+        internal DownloadState downloadState1;
 
         public string str1 { get; set; }
         public string previewImage { get; set; }
         public string downloadurl { get; set; }
 
         public string filepath { get; set; }
-        public bool isDownload
+        public DownloadState downloadState
         {
-            get => isDownload1; 
+            get => downloadState1; 
             set
             {
-                isDownload1 = value;
+                downloadState1 = value;
                 OnPropertyChanged();
                 CommandManager.InvalidateRequerySuggested();
             }
@@ -183,10 +188,12 @@ namespace MacWallpaper
         public async void Download4kWallpaper()
         {
             Ass ass = this;
+            ass.downloadState = DownloadState.downloading;
+
             string v = Helper.GetUrlFilePath(ass.downloadurl, Helper._downloadPath);
             WebClient webClient = new WebClient();
             webClient.DownloadFileCompleted += (object sender, System.ComponentModel.AsyncCompletedEventArgs e) => {
-                ass.isDownload = true;
+                ass.downloadState = DownloadState.downloaded;
                 ass.filepath = v;
             };
             webClient.DownloadProgressChanged += (object sender, DownloadProgressChangedEventArgs e) => {
@@ -219,7 +226,7 @@ namespace MacWallpaper
         public bool CanExecute(object parameter)
         {
             if(parameter is Ass ass)
-                return !ass.isDownload;
+                return ass.downloadState== DownloadState.none;
             return false;
         }
 
