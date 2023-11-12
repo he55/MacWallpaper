@@ -14,57 +14,40 @@
             <Setter Property="VerticalContentAlignment" Value="Top"/>
         </Style>
     </Window.Resources>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="500"/>
-        </Grid.ColumnDefinitions>
-        <ListBox x:Name="listBox" >
+    <DockPanel>
+        <ListBox x:Name="listBox" Width="140" >
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding str1}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <local:MyHeaderControl x:Name="myHeaderControl"/>
-            <ui:GridView x:Name="gridView" ItemContainerStyle="{StaticResource GridViewItemStyle}" 
-                     HorizontalAlignment="Left" Width="500" 
-                     ItemsSource="{Binding SelectedItem.assets, ElementName=listBox}"
-                         SelectionChanged="gridView_SelectionChanged"
-                         Grid.Row="1">
-                <ui:GridView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Width="107" Margin="5">
-                            <Border CornerRadius="5" Padding="1" BorderThickness="2">
-                                <Border.Style>
-                                    <Style TargetType="Border">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding isSelected}" Value="True">
-                                                <Setter Property="BorderBrush" Value="#ff3162db"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
-                                <Border CornerRadius="4" Width="107" Height="65">
-                                    <Border.Background>
-                                        <ImageBrush ImageSource="{Binding previewImage}"/>
-                                    </Border.Background>
-                                </Border>
+        <local:MyHeaderControl x:Name="myHeaderControl" DockPanel.Dock="Top" Height="102"/>
+        <ui:GridView x:Name="gridView" ItemContainerStyle="{StaticResource GridViewItemStyle}" Width="500" 
+           ItemsSource="{Binding SelectedItem.assets, ElementName=listBox}" SelectionChanged="gridView_SelectionChanged">
+            <ui:GridView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Width="107" Margin="5">
+                        <Border CornerRadius="5" Padding="1" BorderThickness="2">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding isSelected}" Value="True">
+                                            <Setter Property="BorderBrush" Value="#ff3162db"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Border CornerRadius="4" Width="107" Height="65">
+                                <Border.Background>
+                                    <ImageBrush ImageSource="{Binding previewImage}"/>
+                                </Border.Background>
                             </Border>
-                            <TextBlock Text="{Binding str1}" TextWrapping="Wrap" TextAlignment="Center" FontSize="10" FontWeight="Bold" Margin="0,2,0,0"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ui:GridView.ItemTemplate>
-            </ui:GridView>
-
-        </Grid>
-
-
-    </Grid>
+                        </Border>
+                        <TextBlock Text="{Binding str1}" TextWrapping="Wrap" TextAlignment="Center" FontSize="10" FontWeight="Bold" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ui:GridView.ItemTemplate>
+        </ui:GridView>
+    </DockPanel>
 </Window>
