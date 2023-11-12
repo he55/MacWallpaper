@@ -100,7 +100,7 @@ namespace MacWallpaper
 
                 _lastSelectedItem = selectedItem;
                 selectedItem.isSelected = true;
-                gridHeader.DataContext = selectedItem;
+                myHeaderControl.DataContext = selectedItem;
             }
         }
     }
