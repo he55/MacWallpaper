@@ -109,27 +109,23 @@ namespace MacWallpaper
             }
         }
 
-        private async void Window_Closing(object sender, CancelEventArgs e)
+        private  void Window_Closing(object sender, CancelEventArgs e)
         {
             List<Ass> asses = _asses.Where(x=>x.downloadState== DownloadState.downloading).ToList();
             if(asses.Count > 0)
             {
-                ContentDialog contentDialog = new ContentDialog();
-                contentDialog.Title = "4kwallpaper";
-                contentDialog.Content = "正在下载文件，是否确认退出";
-                contentDialog.PrimaryButtonText = "退出";
-                contentDialog.DefaultButton = ContentDialogButton.Close;
-                ContentDialogResult contentDialogResult = await contentDialog.ShowAsync();
-                if (contentDialogResult== ContentDialogResult.Primary)
+                if (MessageBox.Show("正在下载文件，是否确认退出", "4kwallpaper", MessageBoxButton.OKCancel)== MessageBoxResult.OK)
                 {
                     foreach(Ass ass in asses)
                     {
                         ass.CancelDownload();
                     }
-                    return;
+                }
+                else
+                {
+                    e.Cancel = true;
                 }
             }
-            e.Cancel = true;
         }
     }
 
