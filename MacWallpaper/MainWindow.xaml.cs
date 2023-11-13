@@ -138,8 +138,8 @@ namespace MacWallpaper
         {
             string v = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             _downloadPath = System.IO.Path.Combine(v, "4kwallpaper");
-            string v1 = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            imgsPath = System.IO.Path.Combine(v1, "images");
+            string v1 = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            imgsPath = System.IO.Path.Combine(v1,@"4kwallpaper\images");
         }
         public static void CreateFolder()
         {
