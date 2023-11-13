@@ -263,6 +263,9 @@ namespace MacWallpaper
              webClient = new WebClient();
             tmpfile=System.IO.Path.GetTempFileName();
             webClient.DownloadFileCompleted += (object sender, System.ComponentModel.AsyncCompletedEventArgs e) => {
+                if(e.Cancelled) 
+                    return;
+
                 string v = Helper.GetUrlFilePath(ass.downloadurl, Helper._downloadPath);
                 ass.downloadState = DownloadState.downloaded;
                 ass.filepath = v;
@@ -271,14 +274,22 @@ namespace MacWallpaper
             webClient.DownloadProgressChanged += (object sender, DownloadProgressChangedEventArgs e) => {
                 ass.progress = e.BytesReceived / (double)e.TotalBytesToReceive * 100;
             };
-            await webClient.DownloadFileTaskAsync(ass.downloadurl, tmpfile);
+            try
+            {
+                await webClient.DownloadFileTaskAsync(ass.downloadurl, tmpfile);
+            }
+            catch (Exception ex)
+            {
+            }
         }
-        public void CancelDownload()
+        public async void CancelDownload()
         {
             webClient.CancelAsync();
+            webClient = null;
             downloadState = DownloadState.none;
             progress = 0;
 
+            await Task.Delay(200);
             File.Delete(tmpfile);
         }
 
