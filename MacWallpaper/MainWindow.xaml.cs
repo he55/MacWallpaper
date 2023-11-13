@@ -41,6 +41,7 @@ namespace MacWallpaper
             List<Ass> asses = new List<Ass>();
             List<Cate> cates = new List<Cate>();
             DownloadButtonCommand command = new DownloadButtonCommand();
+            CancelDownloadButtonCommand cancelDownloadButtonCommand = new CancelDownloadButtonCommand();
 
             foreach (var item in model.categories)
             {
@@ -56,6 +57,7 @@ namespace MacWallpaper
                         previewImage=item2.previewImage,
                         downloadurl=item2.url4KSDR240FPS,
                         DownloadCommand = command,
+                        CancelDownloadCommand = cancelDownloadButtonCommand,
                     };
                     if (File.Exists(v))
                     {
@@ -250,6 +252,7 @@ namespace MacWallpaper
         }
 
         public ICommand DownloadCommand { get; set; }
+        public ICommand CancelDownloadCommand { get; set; }
 
 
         public async void Download4kWallpaper()
@@ -273,6 +276,9 @@ namespace MacWallpaper
         public void CancelDownload()
         {
             webClient.CancelAsync();
+            downloadState = DownloadState.none;
+            progress = 0;
+
             File.Delete(tmpfile);
         }
 
@@ -310,4 +316,29 @@ namespace MacWallpaper
                 ass.Download4kWallpaper();
         }
     }
+
+    public class CancelDownloadButtonCommand : ICommand
+    {
+        //public event EventHandler CanExecuteChanged;
+
+        public event EventHandler CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
+
+        public bool CanExecute(object parameter)
+        {
+            if (parameter is Ass ass)
+                return ass.downloadState == DownloadState.downloading;
+            return false;
+        }
+
+        public void Execute(object parameter)
+        {
+            if (parameter is Ass ass)
+                ass.CancelDownload();
+        }
+    }
+
 }
