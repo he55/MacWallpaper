@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModernWpf.Controls;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -26,6 +27,7 @@ namespace MacWallpaper
     public partial class MainWindow : Window
     {
         Ass _lastSelectedItem;
+        List<Ass> _asses;
 
         public MainWindow()
         {
@@ -66,7 +68,7 @@ namespace MacWallpaper
                 cates.Add(cate);
             }
 
-
+            _asses = asses;
             listBox.ItemsSource = cates;
             listBox.SelectedIndex = 0;
 
@@ -86,6 +88,7 @@ namespace MacWallpaper
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            Helper.InitFolder();
             Helper.CreateFolder();
             LoadData();
         }
@@ -103,6 +106,29 @@ namespace MacWallpaper
                 myHeaderControl.DataContext = selectedItem;
             }
         }
+
+        private async void Window_Closing(object sender, CancelEventArgs e)
+        {
+            List<Ass> asses = _asses.Where(x=>x.downloadState== DownloadState.downloading).ToList();
+            if(asses.Count > 0)
+            {
+                ContentDialog contentDialog = new ContentDialog();
+                contentDialog.Title = "4kwallpaper";
+                contentDialog.Content = "正在下载文件，是否确认退出";
+                contentDialog.PrimaryButtonText = "退出";
+                contentDialog.DefaultButton = ContentDialogButton.Close;
+                ContentDialogResult contentDialogResult = await contentDialog.ShowAsync();
+                if (contentDialogResult== ContentDialogResult.Primary)
+                {
+                    foreach(Ass ass in asses)
+                    {
+                        ass.CancelDownload();
+                    }
+                    return;
+                }
+            }
+            e.Cancel = true;
+        }
     }
 
     public class Helper
@@ -110,6 +136,13 @@ namespace MacWallpaper
         public static string _downloadPath = @"C:\Users\admin\Documents\4kwallpaper";
        public static string imgsPath = "images";
 
+        public static void InitFolder()
+        {
+            string v = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            _downloadPath = System.IO.Path.Combine(v, "4kwallpaper");
+            string v1 = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            imgsPath = System.IO.Path.Combine(v1, "images");
+        }
         public static void CreateFolder()
         {
             if (!Directory.Exists(_downloadPath))
@@ -175,6 +208,9 @@ namespace MacWallpaper
     }
     public class Ass:INotifyPropertyChanged
     {
+        WebClient webClient;
+        string tmpfile;
+
         private double progress1;
         private bool isSelected1;
         internal DownloadState downloadState1;
@@ -221,16 +257,23 @@ namespace MacWallpaper
             Ass ass = this;
             ass.downloadState = DownloadState.downloading;
 
-            string v = Helper.GetUrlFilePath(ass.downloadurl, Helper._downloadPath);
-            WebClient webClient = new WebClient();
+             webClient = new WebClient();
+            tmpfile=System.IO.Path.GetTempFileName();
             webClient.DownloadFileCompleted += (object sender, System.ComponentModel.AsyncCompletedEventArgs e) => {
+                string v = Helper.GetUrlFilePath(ass.downloadurl, Helper._downloadPath);
                 ass.downloadState = DownloadState.downloaded;
                 ass.filepath = v;
+                File.Move(tmpfile, v);
             };
             webClient.DownloadProgressChanged += (object sender, DownloadProgressChangedEventArgs e) => {
                 ass.progress = e.BytesReceived / (double)e.TotalBytesToReceive * 100;
             };
-            await webClient.DownloadFileTaskAsync(ass.downloadurl, v);
+            await webClient.DownloadFileTaskAsync(ass.downloadurl, tmpfile);
+        }
+        public void CancelDownload()
+        {
+            webClient.CancelAsync();
+            File.Delete(tmpfile);
         }
 
 
