@@ -40,9 +40,7 @@ namespace MacWallpaper
 
             List<Ass> asses = new List<Ass>();
             List<Cate> cates = new List<Cate>();
-            DownloadButtonCommand command = new DownloadButtonCommand();
-            CancelDownloadButtonCommand cancelDownloadButtonCommand = new CancelDownloadButtonCommand();
-
+          
             foreach (var item in model.categories)
             {
                 Cate cate = new Cate();
@@ -56,8 +54,6 @@ namespace MacWallpaper
                         str1 = item2.str1,
                         previewImage=item2.previewImage,
                         downloadurl=item2.url4KSDR240FPS,
-                        DownloadCommand = command,
-                        CancelDownloadCommand = cancelDownloadButtonCommand,
                     };
                     if (File.Exists(v))
                     {
@@ -168,7 +164,7 @@ namespace MacWallpaper
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if(value is DownloadState downloadState)
-                return (downloadState== DownloadState.none||downloadState== DownloadState.downloading)?Visibility.Visible:Visibility.Collapsed;
+                return downloadState== DownloadState.none?Visibility.Visible:Visibility.Collapsed;
             throw new NotImplementedException();
         }
 
@@ -246,9 +242,6 @@ namespace MacWallpaper
                 OnPropertyChanged();
             }
         }
-
-        public ICommand DownloadCommand { get; set; }
-        public ICommand CancelDownloadCommand { get; set; }
 
 
         public async void Download4kWallpaper()
