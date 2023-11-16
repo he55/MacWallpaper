@@ -51,6 +51,7 @@ namespace MacWallpaper
                 {
                     string v = Helper.GetUrlFilePath(item2.url4KSDR240FPS, Helper._downloadPath);
                     Ass ass = new Ass { 
+                        id = item2.id,
                         str1 = item2.str1,
                         previewImage=item2.previewImage,
                         downloadurl=item2.url4KSDR240FPS,
@@ -70,6 +71,19 @@ namespace MacWallpaper
             listBox.ItemsSource = cates;
             listBox.SelectedIndex = 0;
 
+            Ass ass1=null;
+            string id = "12E0343D-2CD9-48EA-AB57-4D680FB6D0C7";
+            if (!string.IsNullOrEmpty(id))
+            {
+                ass1=_asses.Where(x=>x.id == id).FirstOrDefault();
+            }
+
+            if(ass1==null)
+                ass1 = _asses[0];
+
+            ass1.isSelected = true;
+            myHeaderControl.DataContext = ass1;
+            _lastSelectedItem = ass1;
 
             WebClient webClient = new WebClient();
 
@@ -197,6 +211,7 @@ namespace MacWallpaper
         private bool isSelected1;
         internal DownloadState downloadState1;
 
+        public string id { get; set; }
         public string str1 { get; set; }
         public string previewImage { get; set; }
         public string downloadurl { get; set; }
