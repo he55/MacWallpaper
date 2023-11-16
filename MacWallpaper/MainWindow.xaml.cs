@@ -159,27 +159,15 @@ namespace MacWallpaper
         }
     }
 
-    public class DownloadButtonVisibilityConverter : IValueConverter
+    public class DownloadStateToVisibilityConverter : IValueConverter
     {
+        public DownloadState State { get; set; }
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if(value is DownloadState downloadState)
-                return downloadState== DownloadState.none?Visibility.Visible:Visibility.Collapsed;
-            throw new NotImplementedException();
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class ProgressVisibilityConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is DownloadState downloadState)
-                return downloadState == DownloadState.downloading ? Visibility.Visible : Visibility.Collapsed;
+            {
+                return State==downloadState?Visibility.Visible:Visibility.Collapsed;
+            }
             throw new NotImplementedException();
         }
 

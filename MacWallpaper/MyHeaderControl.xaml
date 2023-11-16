@@ -9,8 +9,8 @@
     <UserControl.Resources>
         <local:DownloadButtonCommand x:Key="downloadCommand"/>
         <local:CancelDownloadButtonCommand x:Key="cancelDownloadCommand"/>
-        <local:DownloadButtonVisibilityConverter x:Key="converter1"/>
-        <local:ProgressVisibilityConverter x:Key="converter2"/>
+        <local:DownloadStateToVisibilityConverter State="none" x:Key="noneConverter"/>
+        <local:DownloadStateToVisibilityConverter State="downloading" x:Key="downloadingConverter"/>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -30,10 +30,10 @@
             </StackPanel>
             <DockPanel>
                 <Button Content="下载" Command="{StaticResource downloadCommand}" CommandParameter="{Binding}" 
-                     Visibility="{Binding downloadState, Converter={StaticResource converter1}}"/>
+                     Visibility="{Binding downloadState, Converter={StaticResource noneConverter}}"/>
                 <Button Content="取消下载" Command="{StaticResource cancelDownloadCommand}" CommandParameter="{Binding}" 
-       Visibility="{Binding downloadState, Converter={StaticResource converter2}}"/>
-                <ui:ProgressBar Value="{Binding progress}" Visibility="{Binding downloadState, Converter={StaticResource converter2}}" Margin="20,0"/>
+       Visibility="{Binding downloadState, Converter={StaticResource downloadingConverter}}"/>
+                <ui:ProgressBar Value="{Binding progress}" Visibility="{Binding downloadState, Converter={StaticResource downloadingConverter}}" Margin="20,0"/>
             </DockPanel>
         </StackPanel>
     </Grid>
