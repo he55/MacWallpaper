@@ -52,21 +52,22 @@ namespace MacWallpaper
 
             List<Ass> asses = new List<Ass>();
             List<Cate> cates = new List<Cate>();
-          
+
             foreach (var item in model.categories)
             {
                 Cate cate = new Cate();
-                cate.str1=GetString(item.localizedNameKey);
-                cate.des=GetString(item.localizedDescriptionKey);
+                cate.str1 = GetString(item.localizedNameKey);
+                cate.des = GetString(item.localizedDescriptionKey);
                 cate.assets = new List<Ass>();
                 foreach (var item2 in model.assets.Where(x => x.categories.Contains(item.id)))
                 {
                     string v = Helper.GetUrlFilePath(item2.url4KSDR240FPS, Helper._downloadPath);
-                    Ass ass = new Ass { 
+                    Ass ass = new Ass
+                    {
                         id = item2.id,
-                        str1 =GetString(item2.localizedNameKey),
-                        previewImage=item2.previewImage,
-                        downloadurl=item2.url4KSDR240FPS,
+                        str1 = GetString(item2.localizedNameKey),
+                        previewImage = item2.previewImage,
+                        downloadurl = item2.url4KSDR240FPS,
                     };
                     if (File.Exists(v))
                     {
@@ -83,25 +84,28 @@ namespace MacWallpaper
             listBox.ItemsSource = cates;
             listBox.SelectedIndex = _settings.SelectedIdx;
 
-            Ass ass1=null;
-            string id =_settings.SelectedId;
+            Ass ass1 = null;
+            string id = _settings.SelectedId;
             if (!string.IsNullOrEmpty(id))
             {
-                ass1=_asses.Where(x=>x.id == id).FirstOrDefault();
+                ass1 = _asses.Where(x => x.id == id).FirstOrDefault();
             }
 
-            if(ass1==null)
+            if (ass1 == null)
                 ass1 = _asses[0];
 
             ass1.isSelected = true;
             myHeaderControl.DataContext = ass1;
             _lastSelectedItem = ass1;
+        }
 
+         static async void DownloadImage(List<Ass> asses)
+        {
             WebClient webClient = new WebClient();
 
             foreach (var asset in asses)
             {
-                string v2 = Helper.GetUrlFilePath(asset.previewImage,Helper.imgsPath);
+                string v2 = Helper.GetUrlFilePath(asset.previewImage, Helper.imgsPath);
                 if (!File.Exists(v2))
                 {
                     await webClient.DownloadFileTaskAsync(asset.previewImage, v2);
@@ -112,9 +116,9 @@ namespace MacWallpaper
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Helper.InitFolder();
             Helper.CreateFolder();
             LoadData();
+            DownloadImage(_asses);
         }
 
         private void gridView_SelectionChanged(object sender, SelectionChangedEventArgs e)

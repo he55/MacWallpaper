@@ -7,18 +7,16 @@ namespace MacWallpaper
 {
     public class Helper
     {
-        public static string _downloadPath = @"C:\Users\admin\Documents\4kwallpaper";
-       public static string imgsPath = "images";
+        public static string _downloadPath ;
+       public static string imgsPath ;
 
-        public static void InitFolder()
+        public static void CreateFolder()
         {
             string v = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             _downloadPath = System.IO.Path.Combine(v, "4kwallpaper");
             string v1 = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            imgsPath = System.IO.Path.Combine(v1,@"4kwallpaper\images");
-        }
-        public static void CreateFolder()
-        {
+            imgsPath = System.IO.Path.Combine(v1, @"4kwallpaper\images");
+
             if (!Directory.Exists(_downloadPath))
             {
                 Directory.CreateDirectory(_downloadPath);
