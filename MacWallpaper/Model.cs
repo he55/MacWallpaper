@@ -12,7 +12,6 @@ namespace MacWallpaper
     public static class ModelHelper
     {
         static Dictionary<string, string> s_dict;
-        public static Asset[] s_assets;
         public static string GetString(string name)
         {
             if(s_dict.TryGetValue(name,out string value))
@@ -28,7 +27,6 @@ namespace MacWallpaper
 
             string v1 = File.ReadAllText(@"data\entries.json");
             var model=JSONParser.FromJson<Rootobject>(v1);
-            s_assets = model.assets;
             return model;
         }
     }
@@ -51,28 +49,6 @@ namespace MacWallpaper
         public string representativeAssetID { get; set; }
         public string localizedNameKey { get; set; }
         public string localizedDescriptionKey { get; set; }
-
-        public string str1
-        {
-            get
-            {
-                return ModelHelper.GetString(localizedNameKey);
-            }
-        }
-        public string str2
-        {
-            get
-            {
-                return ModelHelper.GetString(localizedDescriptionKey);
-            }
-        }
-        public Asset[] assets
-        {
-            get
-            {
-                return ModelHelper.s_assets.Where(x=>x.categories.Contains(id)).ToArray();
-            }
-        }
     }
 
     public class Asset
@@ -91,14 +67,6 @@ namespace MacWallpaper
         public int preferredOrder { get; set; }
         public string[] categories { get; set; }
         public string group { get; set; }
-
-        public string str1
-        {
-            get
-            {
-                return ModelHelper.GetString(localizedNameKey);
-            }
-        }
     }
 
 }

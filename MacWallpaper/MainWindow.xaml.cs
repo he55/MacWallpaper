@@ -43,15 +43,15 @@ namespace MacWallpaper
             foreach (var item in model.categories)
             {
                 Cate cate = new Cate();
-                cate.str1 = item.str1;
-                cate.des = item.str2;
+                cate.str1=ModelHelper.GetString(item.localizedNameKey);
+                cate.des=ModelHelper.GetString(item.localizedDescriptionKey);
                 cate.assets = new List<Ass>();
-                foreach (var item2 in item.assets)
+                foreach (var item2 in model.assets.Where(x => x.categories.Contains(item.id)))
                 {
                     string v = Helper.GetUrlFilePath(item2.url4KSDR240FPS, Helper._downloadPath);
                     Ass ass = new Ass { 
                         id = item2.id,
-                        str1 = item2.str1,
+                        str1 =ModelHelper.GetString(item2.localizedNameKey),
                         previewImage=item2.previewImage,
                         downloadurl=item2.url4KSDR240FPS,
                     };
