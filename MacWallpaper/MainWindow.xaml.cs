@@ -34,7 +34,7 @@ namespace MacWallpaper
             InitializeComponent();
         }
 
-        public string GetString(string name)
+        string GetString(string name)
         {
             if (lang.TryGetValue(name, out string value))
                 return value;
@@ -42,7 +42,7 @@ namespace MacWallpaper
         }
 
         Dictionary<string, string> lang;
-        private async void LoadData()
+        void LoadData()
         {
             string vvv = File.ReadAllText(@"data\Localizable.json");
             lang = JSONParser.FromJson<Dictionary<string, string>>(vvv);
