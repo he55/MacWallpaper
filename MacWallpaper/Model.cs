@@ -9,28 +9,7 @@ using TinyJson;
 
 namespace MacWallpaper
 {
-    public static class ModelHelper
-    {
-        static Dictionary<string, string> s_dict;
-        public static string GetString(string name)
-        {
-            if(s_dict.TryGetValue(name,out string value))
-                return value;
-            return "";
-        }
-
-        public static Rootobject Load()
-        {
-            string v = File.ReadAllText(@"data\Localizable.json");
-            var lang=JSONParser.FromJson<Dictionary<string,string>>(v);
-            s_dict = lang;
-
-            string v1 = File.ReadAllText(@"data\entries.json");
-            var model=JSONParser.FromJson<Rootobject>(v1);
-            return model;
-        }
-    }
-
+   
     public class Rootobject
     {
         public int initialAssetCount { get; set; }

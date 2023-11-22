@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using DreamScene2;
 using System.Windows.Shapes;
+using TinyJson;
 
 namespace MacWallpaper
 {
@@ -33,9 +34,21 @@ namespace MacWallpaper
             InitializeComponent();
         }
 
+        public string GetString(string name)
+        {
+            if (lang.TryGetValue(name, out string value))
+                return value;
+            return "";
+        }
+
+        Dictionary<string, string> lang;
         private async void LoadData()
         {
-            var model = ModelHelper.Load();
+            string vvv = File.ReadAllText(@"data\Localizable.json");
+            lang = JSONParser.FromJson<Dictionary<string, string>>(vvv);
+
+            string v11 = File.ReadAllText(@"data\entries.json");
+            var model = JSONParser.FromJson<Rootobject>(v11);
 
             List<Ass> asses = new List<Ass>();
             List<Cate> cates = new List<Cate>();
@@ -43,15 +56,15 @@ namespace MacWallpaper
             foreach (var item in model.categories)
             {
                 Cate cate = new Cate();
-                cate.str1=ModelHelper.GetString(item.localizedNameKey);
-                cate.des=ModelHelper.GetString(item.localizedDescriptionKey);
+                cate.str1=GetString(item.localizedNameKey);
+                cate.des=GetString(item.localizedDescriptionKey);
                 cate.assets = new List<Ass>();
                 foreach (var item2 in model.assets.Where(x => x.categories.Contains(item.id)))
                 {
                     string v = Helper.GetUrlFilePath(item2.url4KSDR240FPS, Helper._downloadPath);
                     Ass ass = new Ass { 
                         id = item2.id,
-                        str1 =ModelHelper.GetString(item2.localizedNameKey),
+                        str1 =GetString(item2.localizedNameKey),
                         previewImage=item2.previewImage,
                         downloadurl=item2.url4KSDR240FPS,
                     };
