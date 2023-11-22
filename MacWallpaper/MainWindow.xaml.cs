@@ -142,6 +142,126 @@ namespace MacWallpaper
             }
         }
     }
+
+
+    public partial class MainVM
+    {
+        Settings _settings = Settings.Load();
+        Ass _lastSelectedItem;
+        List<Ass> _asses;
+
+        private async void LoadData()
+        {
+            var model = ModelHelper.Load();
+
+            List<Ass> asses = new List<Ass>();
+            List<Cate> cates = new List<Cate>();
+
+            foreach (var item in model.categories)
+            {
+                Cate cate = new Cate();
+                cate.str1 = ModelHelper.GetString(item.localizedNameKey);
+                cate.des = ModelHelper.GetString(item.localizedDescriptionKey);
+                cate.assets = new List<Ass>();
+                foreach (var item2 in model.assets.Where(x => x.categories.Contains(item.id)))
+                {
+                    string v = Helper.GetUrlFilePath(item2.url4KSDR240FPS, Helper._downloadPath);
+                    Ass ass = new Ass
+                    {
+                        id = item2.id,
+                        str1 = ModelHelper.GetString(item2.localizedNameKey),
+                        previewImage = item2.previewImage,
+                        downloadurl = item2.url4KSDR240FPS,
+                    };
+                    if (File.Exists(v))
+                    {
+                        ass.downloadState1 = DownloadState.downloaded;
+                        ass.filepath = v;
+                    }
+                    asses.Add(ass);
+                    cate.assets.Add(ass);
+                }
+                cates.Add(cate);
+            }
+
+            _asses = asses;
+            listBox.ItemsSource = cates;
+            listBox.SelectedIndex = _settings.SelectedIdx;
+
+            Ass ass1 = null;
+            string id = _settings.SelectedId;
+            if (!string.IsNullOrEmpty(id))
+            {
+                ass1 = _asses.Where(x => x.id == id).FirstOrDefault();
+            }
+
+            if (ass1 == null)
+                ass1 = _asses[0];
+
+            ass1.isSelected = true;
+            myHeaderControl.DataContext = ass1;
+            _lastSelectedItem = ass1;
+
+            WebClient webClient = new WebClient();
+
+            foreach (var asset in asses)
+            {
+                string v2 = Helper.GetUrlFilePath(asset.previewImage, Helper.imgsPath);
+                if (!File.Exists(v2))
+                {
+                    await webClient.DownloadFileTaskAsync(asset.previewImage, v2);
+                }
+                asset.previewImage = v2;
+            }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            Helper.InitFolder();
+            Helper.CreateFolder();
+            LoadData();
+        }
+
+        private void gridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Ass selectedItem = (Ass)gridView.SelectedItem;
+            if (selectedItem != null)
+            {
+                if (_lastSelectedItem != null)
+                    _lastSelectedItem.isSelected = false;
+
+                _lastSelectedItem = selectedItem;
+                selectedItem.isSelected = true;
+                myHeaderControl.DataContext = selectedItem;
+
+                _settings.SelectedIdx = listBox.SelectedIndex;
+                _settings.SelectedId = selectedItem.id;
+            }
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            Settings.Save();
+
+            List<Ass> asses = _asses.Where(x => x.downloadState == DownloadState.downloading).ToList();
+            if (asses.Count > 0)
+            {
+                if (MessageBox.Show("正在下载文件，是否确认退出", "4kwallpaper", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                {
+                    foreach (Ass ass in asses)
+                    {
+                        ass.CancelDownload();
+                    }
+                }
+                else
+                {
+                    e.Cancel = true;
+                }
+            }
+        }
+    }
+
+
     public enum DownloadState
     {
         none,
