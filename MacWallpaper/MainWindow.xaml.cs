@@ -17,6 +17,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using DreamScene2;
 using System.Windows.Shapes;
 
 namespace MacWallpaper
@@ -26,6 +27,7 @@ namespace MacWallpaper
     /// </summary>
     public partial class MainWindow : Window
     {
+        Settings _settings=Settings.Load();
         Ass _lastSelectedItem;
         List<Ass> _asses;
 
@@ -69,10 +71,10 @@ namespace MacWallpaper
 
             _asses = asses;
             listBox.ItemsSource = cates;
-            listBox.SelectedIndex = 0;
+            listBox.SelectedIndex = _settings.SelectedIdx;
 
             Ass ass1=null;
-            string id = "12E0343D-2CD9-48EA-AB57-4D680FB6D0C7";
+            string id =_settings.SelectedId;
             if (!string.IsNullOrEmpty(id))
             {
                 ass1=_asses.Where(x=>x.id == id).FirstOrDefault();
@@ -116,11 +118,16 @@ namespace MacWallpaper
                 _lastSelectedItem = selectedItem;
                 selectedItem.isSelected = true;
                 myHeaderControl.DataContext = selectedItem;
+
+                _settings.SelectedIdx = listBox.SelectedIndex;
+                _settings.SelectedId=selectedItem.id;
             }
         }
 
         private  void Window_Closing(object sender, CancelEventArgs e)
         {
+            Settings.Save();
+
             List<Ass> asses = _asses.Where(x=>x.downloadState== DownloadState.downloading).ToList();
             if(asses.Count > 0)
             {

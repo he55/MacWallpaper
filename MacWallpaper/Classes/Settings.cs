@@ -12,6 +12,8 @@ namespace DreamScene2
 
         public bool FirstRun { get; set; } = true;
         public bool AutoPlay { get; set; } = true;
+        public int SelectedIdx { get; set; }
+        public string SelectedId { get; set; }
         public int PlayMode { get; set; }
 
         public bool AutoPause1 { get; set; }
