@@ -14,20 +14,6 @@ namespace DreamScene2
         public bool AutoPlay { get; set; } = true;
         public int SelectedIdx { get; set; }
         public string SelectedId { get; set; }
-        public int PlayMode { get; set; }
-
-        public bool AutoPause1 { get; set; }
-        public bool AutoPause2 { get; set; }
-        public bool AutoPause3 { get; set; }
-
-        public bool IsMuted { get; set; }
-        public bool DisableWebSecurity { get; set; } = true;
-        public bool UseDesktopInteraction { get; set; } = true;
-
-        public bool CanPause()
-        {
-            return AutoPause1 || AutoPause2 || AutoPause3;
-        }
 
         public static Settings Load()
         {
