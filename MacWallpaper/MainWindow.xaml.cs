@@ -1,8 +1,6 @@
-﻿using ModernWpf.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -11,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -145,58 +142,6 @@ namespace MacWallpaper
             }
         }
     }
-
-    public class Helper
-    {
-        public static string _downloadPath = @"C:\Users\admin\Documents\4kwallpaper";
-       public static string imgsPath = "images";
-
-        public static void InitFolder()
-        {
-            string v = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            _downloadPath = System.IO.Path.Combine(v, "4kwallpaper");
-            string v1 = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            imgsPath = System.IO.Path.Combine(v1,@"4kwallpaper\images");
-        }
-        public static void CreateFolder()
-        {
-            if (!Directory.Exists(_downloadPath))
-            {
-                Directory.CreateDirectory(_downloadPath);
-            }
-
-            if (!Directory.Exists(imgsPath))
-            {
-                Directory.CreateDirectory(imgsPath);
-            }
-        }
-
-        public static string GetUrlFilePath(string url, string path)
-        {
-            string v = new Uri(url).Segments.Last();
-            string v1 = System.IO.Path.Combine(path, v);
-            string v2 = System.IO.Path.GetFullPath(v1);
-            return v2;
-        }
-    }
-
-    public class DownloadStateToVisibilityConverter : IValueConverter
-    {
-        public DownloadState State { get; set; }
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if(value is DownloadState downloadState)
-            {
-                return State==downloadState?Visibility.Visible:Visibility.Collapsed;
-            }
-            throw new NotImplementedException();
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
     public enum DownloadState
     {
         none,
@@ -300,54 +245,6 @@ namespace MacWallpaper
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
-    }
-
-    public class DownloadButtonCommand : ICommand
-    {
-        //public event EventHandler CanExecuteChanged;
-
-        public event EventHandler CanExecuteChanged
-        {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
-        }
-
-        public bool CanExecute(object parameter)
-        {
-            if(parameter is Ass ass)
-                return ass.downloadState== DownloadState.none;
-            return false;
-        }
-
-        public void Execute(object parameter)
-        {
-            if(parameter is Ass ass) 
-                ass.Download4kWallpaper();
-        }
-    }
-
-    public class CancelDownloadButtonCommand : ICommand
-    {
-        //public event EventHandler CanExecuteChanged;
-
-        public event EventHandler CanExecuteChanged
-        {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
-        }
-
-        public bool CanExecute(object parameter)
-        {
-            if (parameter is Ass ass)
-                return ass.downloadState == DownloadState.downloading;
-            return false;
-        }
-
-        public void Execute(object parameter)
-        {
-            if (parameter is Ass ass)
-                ass.CancelDownload();
         }
     }
 
