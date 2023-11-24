@@ -44,7 +44,7 @@ namespace MacWallpaper
         Dictionary<string, string> lang;
         void LoadData()
         {
-            string vvv = File.ReadAllText(@"data\Localizable.json");
+            string vvv = File.ReadAllText($@"data\{_settings.Lang}.json");
             lang = JSONParser.FromJson<Dictionary<string, string>>(vvv);
 
             string v11 = File.ReadAllText(@"data\entries.json");
@@ -157,6 +157,16 @@ namespace MacWallpaper
                     e.Cancel = true;
                 }
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (_settings.Lang == "en")
+                _settings.Lang = "zh_CN";
+            else
+                _settings.Lang = "en";
+
+            LoadData();
         }
     }
     public enum DownloadState
