@@ -11,6 +11,7 @@
                 <ui:XamlControlsResources />
                 <!-- Other merged dictionaries here -->
                 <ResourceDictionary Source="/GridView.xaml"/>
+                <ResourceDictionary Source="/Dictionary2.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <!-- Other app resources here -->
         </ResourceDictionary>
