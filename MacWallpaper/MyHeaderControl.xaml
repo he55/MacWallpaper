@@ -29,9 +29,9 @@
                 <ui:ToggleSwitch OnContent="" OffContent="" IsOn="True" Margin="20,0"/>
             </StackPanel>
             <DockPanel>
-                <Button Content="下载" Command="{StaticResource downloadCommand}" CommandParameter="{Binding}" 
+                <Button Content="{DynamicResource LDownload}" Command="{StaticResource downloadCommand}" CommandParameter="{Binding}" 
                      Visibility="{Binding downloadState, Converter={StaticResource noneConverter}}"/>
-                <Button Content="取消下载" Command="{StaticResource cancelDownloadCommand}" CommandParameter="{Binding}" 
+                <Button Content="{DynamicResource LCancelDownload}" Command="{StaticResource cancelDownloadCommand}" CommandParameter="{Binding}" 
        Visibility="{Binding downloadState, Converter={StaticResource downloadingConverter}}"/>
                 <ui:ProgressBar Value="{Binding progress}" Visibility="{Binding downloadState, Converter={StaticResource downloadingConverter}}" Margin="20,0"/>
             </DockPanel>
