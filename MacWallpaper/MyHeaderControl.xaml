@@ -36,7 +36,7 @@
             <Border Style="{StaticResource BorderStyle}">
                 <Grid >
                     <TextBlock Text="显示为屏幕保护程序" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                    <ui:ToggleSwitch OnContent="" OffContent="" IsOn="True" HorizontalAlignment="Right" Width="50"/>
+                    <ui:ToggleSwitch x:Name="toggleSwitch1" Toggled="ToggleSwitch_Toggled" OnContent="" OffContent=""  HorizontalAlignment="Right" Width="50"/>
                 </Grid>
             </Border>
             <DockPanel>

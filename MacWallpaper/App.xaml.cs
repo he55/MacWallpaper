@@ -15,10 +15,9 @@ namespace MacWallpaper
     /// </summary>
     public partial class App : Application
     {
-        Settings settings=Settings.Load();
         protected override void OnStartup(StartupEventArgs e)
         {
-            if (settings.Lang == "zh_CN")
+            if (Settings.Load().Lang == "zh_CN")
                 Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("pack://application:,,,/Dict3.xaml") });
 
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };

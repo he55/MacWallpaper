@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DreamScene2;
 
 namespace MacWallpaper
 {
@@ -20,9 +21,17 @@ namespace MacWallpaper
     /// </summary>
     public partial class MyHeaderControl : UserControl
     {
+        Settings _settings=Settings.Load();
+
         public MyHeaderControl()
         {
             InitializeComponent();
+            toggleSwitch1.IsOn = _settings.AutoPlay;
+        }
+
+        private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            _settings.AutoPlay = toggleSwitch1.IsOn;
         }
     }
 }
