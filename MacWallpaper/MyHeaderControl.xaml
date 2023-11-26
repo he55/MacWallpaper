@@ -24,12 +24,12 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Border CornerRadius="6" Width="128.4" Height="78" VerticalAlignment="Top" Margin="0,5,0,0">
+        <Border CornerRadius="6" Width="139" Height="84.4" VerticalAlignment="Top" Margin="0,5,0,0">
             <Border.Background>
                 <ImageBrush ImageSource="{Binding previewImage}"/>
             </Border.Background>
         </Border>
-        <StackPanel Grid.Column="1" Margin="20,0,0,0">
+        <StackPanel Grid.Column="1" Margin="10,0,0,0">
             <Border Style="{StaticResource BorderStyle}">
                 <TextBlock Text="{Binding str1}"  />
             </Border>
