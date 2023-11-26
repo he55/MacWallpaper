@@ -11,6 +11,13 @@
         <local:CancelDownloadButtonCommand x:Key="cancelDownloadCommand"/>
         <local:DownloadStateToVisibilityConverter State="none" x:Key="noneConverter"/>
         <local:DownloadStateToVisibilityConverter State="downloading" x:Key="downloadingConverter"/>
+        <Style x:Key="BorderStyle" TargetType="Border">
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlBackgroundBaseLowBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="Margin" Value="0,5"/>
+        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -23,11 +30,15 @@
             </Border.Background>
         </Border>
         <StackPanel Grid.Column="1" Margin="20,0,0,0">
-            <TextBlock Text="{Binding str1}" />
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="显示为屏幕保护程序"/>
-                <ui:ToggleSwitch OnContent="" OffContent="" IsOn="True" Margin="20,0"/>
-            </StackPanel>
+            <Border Style="{StaticResource BorderStyle}">
+                <TextBlock Text="{Binding str1}"  />
+            </Border>
+            <Border Style="{StaticResource BorderStyle}">
+                <Grid >
+                    <TextBlock Text="显示为屏幕保护程序" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <ui:ToggleSwitch OnContent="" OffContent="" IsOn="True" HorizontalAlignment="Right" Width="50"/>
+                </Grid>
+            </Border>
             <DockPanel>
                 <Button Content="{DynamicResource LDownload}" Command="{StaticResource downloadCommand}" CommandParameter="{Binding}" 
                      Visibility="{Binding downloadState, Converter={StaticResource noneConverter}}"/>
