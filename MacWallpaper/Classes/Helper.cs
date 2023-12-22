@@ -2,7 +2,6 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Windows.Forms;
 
 namespace DreamScene2
 {
@@ -20,10 +19,10 @@ namespace DreamScene2
             });
         }
 
-        public static string GetPathForStartupFolder(string subPath)
-        {
-            return Path.Combine(Application.StartupPath, subPath);
-        }
+        //public static string GetPathForStartupFolder(string subPath)
+        //{
+        //    return Path.Combine(Application.StartupPath, subPath);
+        //}
 
         public static string GetPathForUserAppDataFolder(string subPath)
         {
@@ -46,12 +45,12 @@ namespace DreamScene2
             return startOnBoot;
         }
 
-        public static void SetStartOnBoot()
-        {
-            RegistryKey startupKey = Registry.CurrentUser.OpenSubKey(STARTUP_KEY, true);
-            startupKey.SetValue(Constant.ProjectName, $"\"{Application.ExecutablePath}\" -b");
-            startupKey.Close();
-        }
+        //public static void SetStartOnBoot()
+        //{
+        //    RegistryKey startupKey = Registry.CurrentUser.OpenSubKey(STARTUP_KEY, true);
+        //    startupKey.SetValue(Constant.ProjectName, $"\"{Application.ExecutablePath}\" -b");
+        //    startupKey.Close();
+        //}
 
         public static void RemoveStartOnBoot()
         {
