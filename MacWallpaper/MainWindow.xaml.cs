@@ -159,8 +159,6 @@ namespace MacWallpaper
                 _settings.Lang = "zh_CN";
             else
                 _settings.Lang = "en";
-
-            LoadData();
         }
     }
     public enum DownloadState
