@@ -4,4 +4,6 @@
     <sys:String x:Key="LDownload">下载</sys:String>
     <sys:String x:Key="LCancelDownload">取消</sys:String>
     <sys:String x:Key="LLanguage">中文</sys:String>
+    <sys:String x:Key="LOpenFolder">Open Folder</sys:String>
+    <sys:String x:Key="LPreview">Preview</sys:String>
 </ResourceDictionary>

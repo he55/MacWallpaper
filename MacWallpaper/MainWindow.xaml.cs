@@ -264,6 +264,16 @@ namespace MacWallpaper
             File.Delete(tmpfile);
         }
 
+        public void OpenFolder()
+        {
+
+        }
+
+        public void Preview()
+        {
+
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -9,8 +9,11 @@
     <UserControl.Resources>
         <local:DownloadButtonCommand x:Key="downloadCommand"/>
         <local:CancelDownloadButtonCommand x:Key="cancelDownloadCommand"/>
+        <local:OpenFolderButtonCommand x:Key="openFolderCommand"/>
+        <local:PreviewButtonCommand x:Key="previewCommand"/>
         <local:DownloadStateToVisibilityConverter State="none" x:Key="noneConverter"/>
         <local:DownloadStateToVisibilityConverter State="downloading" x:Key="downloadingConverter"/>
+        <local:DownloadStateToVisibilityConverter State="downloaded" x:Key="downloadedConverter"/>
         <Style x:Key="BorderStyle" TargetType="Border">
             <Setter Property="BorderBrush" Value="{DynamicResource SystemControlBackgroundBaseLowBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
@@ -44,6 +47,12 @@
                      Visibility="{Binding downloadState, Converter={StaticResource noneConverter}}"/>
                 <Button Content="{DynamicResource LCancelDownload}" Command="{StaticResource cancelDownloadCommand}" CommandParameter="{Binding}" 
        Visibility="{Binding downloadState, Converter={StaticResource downloadingConverter}}"/>
+                
+                <StackPanel Orientation="Horizontal" Visibility="{Binding downloadState, Converter={StaticResource downloadedConverter}}">
+                    <Button Content="{DynamicResource LOpenFolder}" Command="{StaticResource openFolderCommand}" CommandParameter="{Binding}" />
+                    <Button Content="{DynamicResource LPreview}" Command="{StaticResource previewCommand}" CommandParameter="{Binding}" Margin="10,0,0,0" />
+                </StackPanel>
+               
                 <ui:ProgressBar Value="{Binding progress}" Visibility="{Binding downloadState, Converter={StaticResource downloadingConverter}}" Margin="20,0"/>
             </DockPanel>
         </StackPanel>
