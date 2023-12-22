@@ -61,12 +61,12 @@ namespace MacWallpaper
                         id = item2.id,
                         str1 = GetString(item2.localizedNameKey),
                         previewImage = item2.previewImage,
-                        downloadurl = item2.url4KSDR240FPS,
+                        downloadURL = item2.url4KSDR240FPS,
                     };
                     if (File.Exists(v))
                     {
                         ass.downloadState1 = DownloadState.downloaded;
-                        ass.filepath = v;
+                        ass.filePath = v;
                     }
                     asses.Add(ass);
                     cate.assets.Add(ass);
@@ -187,9 +187,9 @@ namespace MacWallpaper
         public string id { get; set; }
         public string str1 { get; set; }
         public string previewImage { get; set; }
-        public string downloadurl { get; set; }
+        public string downloadURL { get; set; }
 
-        public string filepath { get; set; }
+        public string filePath { get; set; }
         public DownloadState downloadState
         {
             get => downloadState1;
@@ -219,7 +219,7 @@ namespace MacWallpaper
             }
         }
 
-        public async void Download4kWallpaper()
+        public async void Download()
         {
             Ass ass = this;
             ass.downloadState = DownloadState.downloading;
@@ -231,9 +231,9 @@ namespace MacWallpaper
                 if (e.Cancelled)
                     return;
 
-                string v = Helper.GetUrlFilePath(ass.downloadurl, Helper._downloadPath);
+                string v = Helper.GetUrlFilePath(ass.downloadURL, Helper._downloadPath);
                 ass.downloadState = DownloadState.downloaded;
-                ass.filepath = v;
+                ass.filePath = v;
                 File.Move(tmpfile, v);
             };
             webClient.DownloadProgressChanged += (object sender, DownloadProgressChangedEventArgs e) =>
@@ -242,11 +242,9 @@ namespace MacWallpaper
             };
             try
             {
-                await webClient.DownloadFileTaskAsync(ass.downloadurl, tmpfile);
+                await webClient.DownloadFileTaskAsync(ass.downloadURL, tmpfile);
             }
-            catch (Exception ex)
-            {
-            }
+            catch  {}
         }
 
         public async void CancelDownload()
