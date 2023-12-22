@@ -27,6 +27,14 @@ namespace MacWallpaper
         public VideoWindow()
         {
             InitializeComponent();
+
+            this.Topmost = true;
+            this.WindowStyle = WindowStyle.None;
+            this.ResizeMode= ResizeMode.NoResize;
+            this.Top = 0;
+            this.Left = 0;
+            this.Width = SystemParameters.PrimaryScreenWidth;
+            this.Height = SystemParameters.PrimaryScreenHeight;
         }
 
         public string Source { get; set; }
