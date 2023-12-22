@@ -266,7 +266,9 @@ namespace MacWallpaper
 
         public void Preview()
         {
-
+            VideoWindow videoWindow = new VideoWindow();
+            videoWindow.Play(filePath);
+            videoWindow.Show();
         }
 
 

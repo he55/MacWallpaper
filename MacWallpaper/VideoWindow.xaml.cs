@@ -23,5 +23,10 @@ namespace MacWallpaper
         {
             InitializeComponent();
         }
+
+        public void Play(string filename)
+        {
+
+        }
     }
 }
