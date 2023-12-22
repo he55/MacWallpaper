@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
+﻿using DreamScene2;
+using System;
 using System.Net;
-using System.Threading.Tasks;
 using System.Windows;
-using DreamScene2;
 
 namespace MacWallpaper
 {

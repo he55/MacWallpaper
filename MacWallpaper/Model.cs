@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using TinyJson;
 
 namespace MacWallpaper
 {
-   
+
     public class Rootobject
     {
         public int initialAssetCount { get; set; }
@@ -36,7 +30,7 @@ namespace MacWallpaper
         public bool showInTopLevel { get; set; }
         public string shotID { get; set; }
         public string previewImage { get; set; }
-        public Dictionary<string,string> pointsOfInterest { get; set; }
+        public Dictionary<string, string> pointsOfInterest { get; set; }
         public string localizedNameKey { get; set; }
         public bool includeInShuffle { get; set; }
         public string accessibilityLabel { get; set; }

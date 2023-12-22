@@ -1,21 +1,15 @@
-﻿using System;
+﻿using DreamScene2;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using DreamScene2;
-using System.Windows.Shapes;
 using TinyJson;
 
 namespace MacWallpaper
@@ -25,7 +19,7 @@ namespace MacWallpaper
     /// </summary>
     public partial class MainWindow : Window
     {
-        Settings _settings=Settings.Load();
+        Settings _settings = Settings.Load();
         Ass _lastSelectedItem;
         List<Ass> _asses;
 
@@ -99,7 +93,7 @@ namespace MacWallpaper
             _lastSelectedItem = ass1;
         }
 
-         static async void DownloadImage(List<Ass> asses)
+        static async void DownloadImage(List<Ass> asses)
         {
             WebClient webClient = new WebClient();
 
@@ -126,7 +120,7 @@ namespace MacWallpaper
             Ass selectedItem = (Ass)gridView.SelectedItem;
             if (selectedItem != null)
             {
-                if(_lastSelectedItem != null)
+                if (_lastSelectedItem != null)
                     _lastSelectedItem.isSelected = false;
 
                 _lastSelectedItem = selectedItem;
@@ -134,20 +128,20 @@ namespace MacWallpaper
                 myHeaderControl.DataContext = selectedItem;
 
                 _settings.SelectedIdx = listBox.SelectedIndex;
-                _settings.SelectedId=selectedItem.id;
+                _settings.SelectedId = selectedItem.id;
             }
         }
 
-        private  void Window_Closing(object sender, CancelEventArgs e)
+        private void Window_Closing(object sender, CancelEventArgs e)
         {
             Settings.Save();
 
-            List<Ass> asses = _asses.Where(x=>x.downloadState== DownloadState.downloading).ToList();
-            if(asses.Count > 0)
+            List<Ass> asses = _asses.Where(x => x.downloadState == DownloadState.downloading).ToList();
+            if (asses.Count > 0)
             {
-                if (MessageBox.Show("正在下载文件，是否确认退出", "4kwallpaper", MessageBoxButton.OKCancel)== MessageBoxResult.OK)
+                if (MessageBox.Show("正在下载文件，是否确认退出", "4kwallpaper", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                 {
-                    foreach(Ass ass in asses)
+                    foreach (Ass ass in asses)
                     {
                         ass.CancelDownload();
                     }
@@ -181,7 +175,7 @@ namespace MacWallpaper
         public string des { get; set; }
         public List<Ass> assets { get; set; }
     }
-    public class Ass:INotifyPropertyChanged
+    public class Ass : INotifyPropertyChanged
     {
         WebClient webClient;
         string tmpfile;
@@ -198,7 +192,7 @@ namespace MacWallpaper
         public string filepath { get; set; }
         public DownloadState downloadState
         {
-            get => downloadState1; 
+            get => downloadState1;
             set
             {
                 downloadState1 = value;
@@ -208,7 +202,7 @@ namespace MacWallpaper
         }
         public double progress
         {
-            get => progress1; 
+            get => progress1;
             set
             {
                 progress1 = value;
@@ -217,7 +211,7 @@ namespace MacWallpaper
         }
         public bool isSelected
         {
-            get => isSelected1; 
+            get => isSelected1;
             set
             {
                 isSelected1 = value;
@@ -231,10 +225,11 @@ namespace MacWallpaper
             Ass ass = this;
             ass.downloadState = DownloadState.downloading;
 
-             webClient = new WebClient();
-            tmpfile=System.IO.Path.GetTempFileName();
-            webClient.DownloadFileCompleted += (object sender, System.ComponentModel.AsyncCompletedEventArgs e) => {
-                if(e.Cancelled) 
+            webClient = new WebClient();
+            tmpfile = System.IO.Path.GetTempFileName();
+            webClient.DownloadFileCompleted += (object sender, System.ComponentModel.AsyncCompletedEventArgs e) =>
+            {
+                if (e.Cancelled)
                     return;
 
                 string v = Helper.GetUrlFilePath(ass.downloadurl, Helper._downloadPath);
@@ -242,7 +237,8 @@ namespace MacWallpaper
                 ass.filepath = v;
                 File.Move(tmpfile, v);
             };
-            webClient.DownloadProgressChanged += (object sender, DownloadProgressChangedEventArgs e) => {
+            webClient.DownloadProgressChanged += (object sender, DownloadProgressChangedEventArgs e) =>
+            {
                 ass.progress = e.BytesReceived / (double)e.TotalBytesToReceive * 100;
             };
             try
