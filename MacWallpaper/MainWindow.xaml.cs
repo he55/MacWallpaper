@@ -140,17 +140,16 @@ namespace MacWallpaper
             if (asses.Count == 0)
                 return;
 
-            if (MessageBox.Show("正在下载文件，是否确认退出", "4kwallpaper", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+            if (MessageBox.Show("正在下载文件，是否确认退出", "4kwallpaper", MessageBoxButton.OKCancel) != MessageBoxResult.OK)
             {
+                e.Cancel = true;
+                return;
+            }
+           
                 foreach (Ass ass in asses)
                 {
                     ass.CancelDownload();
                 }
-            }
-            else
-            {
-                e.Cancel = true;
-            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -220,15 +219,14 @@ namespace MacWallpaper
             }
         }
 
-
         public async void Download4kWallpaper()
         {
             Ass ass = this;
             ass.downloadState = DownloadState.downloading;
 
             webClient = new WebClient();
-            tmpfile = System.IO.Path.GetTempFileName();
-            webClient.DownloadFileCompleted += (object sender, System.ComponentModel.AsyncCompletedEventArgs e) =>
+            tmpfile = Path.GetTempFileName();
+            webClient.DownloadFileCompleted += (object sender, AsyncCompletedEventArgs e) =>
             {
                 if (e.Cancelled)
                     return;
@@ -250,6 +248,7 @@ namespace MacWallpaper
             {
             }
         }
+
         public async void CancelDownload()
         {
             webClient.CancelAsync();
