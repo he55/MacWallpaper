@@ -137,19 +137,19 @@ namespace MacWallpaper
             Settings.Save();
 
             List<Ass> asses = _asses.Where(x => x.downloadState == DownloadState.downloading).ToList();
-            if (asses.Count > 0)
+            if (asses.Count == 0)
+                return;
+
+            if (MessageBox.Show("正在下载文件，是否确认退出", "4kwallpaper", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
             {
-                if (MessageBox.Show("正在下载文件，是否确认退出", "4kwallpaper", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                foreach (Ass ass in asses)
                 {
-                    foreach (Ass ass in asses)
-                    {
-                        ass.CancelDownload();
-                    }
+                    ass.CancelDownload();
                 }
-                else
-                {
-                    e.Cancel = true;
-                }
+            }
+            else
+            {
+                e.Cancel = true;
             }
         }
 

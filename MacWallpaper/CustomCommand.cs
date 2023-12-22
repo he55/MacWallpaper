@@ -3,11 +3,8 @@ using System.Windows.Input;
 
 namespace MacWallpaper
 {
-
     public class DownloadButtonCommand : ICommand
     {
-        //public event EventHandler CanExecuteChanged;
-
         public event EventHandler CanExecuteChanged
         {
             add { CommandManager.RequerySuggested += value; }
@@ -30,8 +27,6 @@ namespace MacWallpaper
 
     public class CancelDownloadButtonCommand : ICommand
     {
-        //public event EventHandler CanExecuteChanged;
-
         public event EventHandler CanExecuteChanged
         {
             add { CommandManager.RequerySuggested += value; }
@@ -54,8 +49,6 @@ namespace MacWallpaper
 
     public class OpenFolderButtonCommand : ICommand
     {
-        //public event EventHandler CanExecuteChanged;
-
         public event EventHandler CanExecuteChanged
         {
             add { CommandManager.RequerySuggested += value; }
@@ -78,8 +71,6 @@ namespace MacWallpaper
 
     public class PreviewButtonCommand : ICommand
     {
-        //public event EventHandler CanExecuteChanged;
-
         public event EventHandler CanExecuteChanged
         {
             add { CommandManager.RequerySuggested += value; }
@@ -99,5 +90,4 @@ namespace MacWallpaper
                 ass.Preview();
         }
     }
-
 }
