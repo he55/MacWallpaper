@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -260,7 +261,7 @@ namespace MacWallpaper
 
         public void OpenFolder()
         {
-
+            Process.Start("explorer.exe", $"/select, \"{filePath}\"");
         }
 
         public void Preview()
