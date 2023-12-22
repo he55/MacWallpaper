@@ -7,5 +7,5 @@
         xmlns:xamlhost="clr-namespace:Microsoft.Toolkit.Wpf.UI.XamlHost;assembly=Microsoft.Toolkit.Wpf.UI.XamlHost"
         mc:Ignorable="d"
         Title="VideoWindow" Height="450" Width="800">
-    <xamlhost:WindowsXamlHost InitialTypeName="" ChildChanged="WindowsXamlHost_ChildChanged"/>
+    <xamlhost:WindowsXamlHost InitialTypeName="Windows.UI.Xaml.Controls.MediaPlayerElement" ChildChanged="WindowsXamlHost_ChildChanged"/>
 </Window>

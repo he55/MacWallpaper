@@ -34,6 +34,9 @@ namespace MacWallpaper
         private void WindowsXamlHost_ChildChanged(object sender, EventArgs e)
         {
             mediaPlayerElement = (MediaPlayerElement)((WindowsXamlHost)sender).Child;
+            if (mediaPlayerElement == null)
+                return;
+
             mediaPlayerElement.Stretch = Windows.UI.Xaml.Media.Stretch.UniformToFill;
             mediaPlayerElement.AutoPlay = true;
             mediaPlayerElement.MediaPlayer.IsLoopingEnabled = true;
