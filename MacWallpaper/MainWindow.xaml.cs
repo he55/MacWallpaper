@@ -1,5 +1,4 @@
 ﻿using DreamScene2;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -146,11 +145,11 @@ namespace MacWallpaper
                 e.Cancel = true;
                 return;
             }
-           
-                foreach (Ass ass in asses)
-                {
-                    ass.CancelDownload();
-                }
+
+            foreach (Ass ass in asses)
+            {
+                ass.CancelDownload();
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -245,7 +244,7 @@ namespace MacWallpaper
             {
                 await webClient.DownloadFileTaskAsync(ass.downloadURL, tmpfile);
             }
-            catch  {}
+            catch { }
         }
 
         public async void CancelDownload()
