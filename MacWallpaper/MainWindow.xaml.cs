@@ -161,18 +161,21 @@ namespace MacWallpaper
                 _settings.Lang = "en";
         }
     }
+
     public enum DownloadState
     {
         none,
         downloading,
         downloaded
     }
+
     public class Cate
     {
         public string str1 { get; set; }
         public string des { get; set; }
         public List<Ass> assets { get; set; }
     }
+
     public class Ass : INotifyPropertyChanged
     {
         WebClient webClient;

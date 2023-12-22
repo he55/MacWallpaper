@@ -13,28 +13,23 @@ namespace MacWallpaper
         public static void CreateFolder()
         {
             string v = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            _downloadPath = System.IO.Path.Combine(v, "4kwallpaper");
+            _downloadPath = Path.Combine(v, "4kwallpaper");
             string v1 = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            imgsPath = System.IO.Path.Combine(v1, @"4kwallpaper\images");
+            imgsPath = Path.Combine(v1, @"4kwallpaper\images");
 
             if (!Directory.Exists(_downloadPath))
-            {
                 Directory.CreateDirectory(_downloadPath);
-            }
 
             if (!Directory.Exists(imgsPath))
-            {
                 Directory.CreateDirectory(imgsPath);
-            }
         }
 
         public static string GetUrlFilePath(string url, string path)
         {
             string v = new Uri(url).Segments.Last();
-            string v1 = System.IO.Path.Combine(path, v);
-            string v2 = System.IO.Path.GetFullPath(v1);
+            string v1 = Path.Combine(path, v);
+            string v2 = Path.GetFullPath(v1);
             return v2;
         }
     }
-
 }

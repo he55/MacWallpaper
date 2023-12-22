@@ -18,5 +18,4 @@ namespace MacWallpaper
             throw new NotImplementedException();
         }
     }
-
 }

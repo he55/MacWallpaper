@@ -3,7 +3,6 @@ using System.Runtime.Serialization;
 
 namespace MacWallpaper
 {
-
     public class Rootobject
     {
         public int initialAssetCount { get; set; }
@@ -41,5 +40,4 @@ namespace MacWallpaper
         public string[] categories { get; set; }
         public string group { get; set; }
     }
-
 }
