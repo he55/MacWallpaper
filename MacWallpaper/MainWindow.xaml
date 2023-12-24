@@ -17,13 +17,7 @@
     </Window.Resources>
     <DockPanel>
         <Grid Width="140">
-            <ListBox x:Name="listBox"  >
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding str1}"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            <ListBox x:Name="listBox" DisplayMemberPath="title"/>
             <Button Content="{DynamicResource LLanguage}" VerticalAlignment="Bottom" Margin="10,0,0,10" Click="Button_Click"/>
         </Grid>
         <local:MyHeaderControl x:Name="myHeaderControl" DockPanel.Dock="Top" Height="125" Margin="10,0,20,0"/>
@@ -33,24 +27,20 @@
             <ui:GridView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel  Margin="5">
-                        <Border CornerRadius="5" Padding="1" BorderThickness="2">
-                            <Border.Style>
-                                <Style TargetType="{x:Type Border}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding isSelected}" Value="True">
-                                            <Setter Property="BorderBrush" Value="#ff3162db"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
+                        <Border x:Name="border" CornerRadius="5" Padding="1" BorderThickness="2">
                             <Border CornerRadius="4" Width="107" Height="65">
                                 <Border.Background>
                                     <ImageBrush ImageSource="{Binding previewImage, IsAsync=True}"/>
                                 </Border.Background>
                             </Border>
                         </Border>
-                        <TextBlock Width="100" Text="{Binding str1}" TextWrapping="Wrap" TextAlignment="Center" FontSize="10" FontWeight="Bold" Margin="0,2,0,0"/>
+                        <TextBlock Width="100" Text="{Binding name}" TextWrapping="Wrap" TextAlignment="Center" FontSize="10" FontWeight="Bold" Margin="0,2,0,0"/>
                     </StackPanel>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding isSelected}" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="#ff3162db"/>
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
                 </DataTemplate>
             </ui:GridView.ItemTemplate>
         </ui:GridView>

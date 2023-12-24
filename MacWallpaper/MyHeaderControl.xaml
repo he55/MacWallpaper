@@ -34,7 +34,7 @@
         </Border>
         <StackPanel Grid.Column="1" Margin="10,0,0,0">
             <Border Style="{StaticResource BorderStyle}">
-                <TextBlock Text="{Binding str1}"  />
+                <TextBlock Text="{Binding name}"  />
             </Border>
             <Border Style="{StaticResource BorderStyle}">
                 <Grid >

@@ -50,8 +50,8 @@ namespace MacWallpaper
             foreach (var item in model.categories)
             {
                 Cate cate = new Cate();
-                cate.str1 = GetString(item.localizedNameKey);
-                cate.des = GetString(item.localizedDescriptionKey);
+                cate.title = GetString(item.localizedNameKey);
+                cate.description = GetString(item.localizedDescriptionKey);
                 cate.assets = new List<Ass>();
                 foreach (var item2 in model.assets.Where(x => x.categories.Contains(item.id)))
                 {
@@ -59,7 +59,7 @@ namespace MacWallpaper
                     Ass ass = new Ass
                     {
                         id = item2.id,
-                        str1 = GetString(item2.localizedNameKey),
+                        name = GetString(item2.localizedNameKey),
                         previewImage = item2.previewImage,
                         downloadURL = item2.url4KSDR240FPS,
                     };
@@ -170,8 +170,8 @@ namespace MacWallpaper
 
     public class Cate
     {
-        public string str1 { get; set; }
-        public string des { get; set; }
+        public string title { get; set; }
+        public string description { get; set; }
         public List<Ass> assets { get; set; }
     }
 
@@ -185,7 +185,7 @@ namespace MacWallpaper
         internal DownloadState downloadState1;
 
         public string id { get; set; }
-        public string str1 { get; set; }
+        public string name { get; set; }
         public string previewImage { get; set; }
         public string downloadURL { get; set; }
 
