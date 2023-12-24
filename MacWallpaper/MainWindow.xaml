@@ -21,8 +21,8 @@
             <Setter Property="BorderBrush" Value="{DynamicResource SystemControlBackgroundBaseLowBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="CornerRadius" Value="5"/>
-            <Setter Property="Padding" Value="5"/>
-            <Setter Property="Margin" Value="0,5"/>
+            <Setter Property="Padding" Value="5,0"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
         </Style>
     </Window.Resources>
     <DockPanel>
@@ -35,13 +35,13 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Border CornerRadius="6" Width="139" Height="84.4" VerticalAlignment="Top" Margin="0,5,0,0">
+                <Border CornerRadius="6" Width="139" Height="84.4" VerticalAlignment="Top" >
                     <Border.Background>
                         <ImageBrush ImageSource="{Binding previewImage}"/>
                     </Border.Background>
                 </Border>
                 <StackPanel Grid.Column="1" Margin="10,0,0,0">
-                    <Border Style="{StaticResource BorderStyle}">
+                    <Border Style="{StaticResource BorderStyle}" Padding="5">
                         <TextBlock Text="{Binding name}"  />
                     </Border>
                     <Border Style="{StaticResource BorderStyle}">
