@@ -26,6 +26,12 @@ namespace MacWallpaper
         public MainWindow()
         {
             InitializeComponent();
+            toggleSwitch1.IsOn = _settings.AutoPlay;
+        }
+
+        private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            _settings.AutoPlay = toggleSwitch1.IsOn;
         }
 
         string GetString(string name)
@@ -158,6 +164,26 @@ namespace MacWallpaper
                 _settings.Lang = "zh_CN";
             else
                 _settings.Lang = "en";
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            _lastSelectedItem.Download();
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            _lastSelectedItem.CancelDownload();
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            _lastSelectedItem.OpenFolder();
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            _lastSelectedItem.Preview();
         }
     }
 
