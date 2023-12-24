@@ -21,7 +21,7 @@ namespace MacWallpaper
         public void Execute(object parameter)
         {
             if (parameter is Ass ass)
-                ass.Download4kWallpaper();
+                ass.Download();
         }
     }
 
