@@ -9,75 +9,12 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ui:GridViewItem">
-                    <ControlTemplate.Resources>
-                        <StreamGeometry x:Key="CheckMark">M 17.939453 5.439453 L 7.5 15.888672 L 2.060547 10.439453 L 2.939453 9.560547 L 7.5 14.111328 L 17.060547 4.560547 Z</StreamGeometry>
-                    </ControlTemplate.Resources>
-                    <Border
-                        x:Name="ContentBorder"
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        CornerRadius="{TemplateBinding CornerRadius}"
-                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-                        <VisualStateManager.CustomVisualStateManager>
-                            <ui:SimpleVisualStateManager />
-                        </VisualStateManager.CustomVisualStateManager>
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="MultiSelectStates">
-                                <VisualStateGroup.Transitions>
-                                    <VisualTransition From="MultiSelectEnabled" To="MultiSelectDisabled">
-                                        <Storyboard>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="MultiSelectSquare" Storyboard.TargetProperty="Visibility">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
-                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.333" Value="{x:Static Visibility.Collapsed}" />
-                                            </ObjectAnimationUsingKeyFrames>
-                                            <ui:FadeOutThemeAnimation TargetName="MultiSelectSquare" />
-                                        </Storyboard>
-                                    </VisualTransition>
-                                </VisualStateGroup.Transitions>
-                                <VisualState x:Name="MultiSelectDisabled" />
-                                <VisualState x:Name="MultiSelectEnabled">
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="MultiSelectSquare" Storyboard.TargetProperty="Visibility">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ui:FadeInThemeAnimation TargetName="MultiSelectSquare" />
-                                    </Storyboard>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                        <Grid>
                             <ContentPresenter
                                 x:Name="ContentPresenter"
                                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                 VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                 Margin="{TemplateBinding Padding}"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                            <Rectangle
-                                x:Name="BorderRectangle"
-                                IsHitTestVisible="False"
-                                Stroke="{DynamicResource SystemControlHighlightListAccentLowBrush}"
-                                StrokeThickness="2"
-                                Opacity="0" />
-                            <Border
-                                x:Name="MultiSelectSquare"
-                                Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
-                                Width="20"
-                                Height="20"
-                                Margin="0,2,2,0"
-                                VerticalAlignment="Top"
-                                HorizontalAlignment="Right"
-                                Visibility="Collapsed">
-                                <ui:FontIconFallback
-                                    x:Name="MultiSelectCheck"
-                                    FontFamily="{DynamicResource SymbolThemeFontFamily}"
-                                    Data="{StaticResource CheckMark}"
-                                    FontSize="16"
-                                    Foreground="{DynamicResource SystemControlForegroundBaseMediumHighBrush}"
-                                    Opacity="0" />
-                            </Border>
-                        </Grid>
-                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
