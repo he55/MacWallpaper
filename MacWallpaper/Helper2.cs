@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace MacWallpaper
 {
-    public class Helper
+    public class Helper2
     {
         public static string _downloadPath;
         public static string imgsPath;

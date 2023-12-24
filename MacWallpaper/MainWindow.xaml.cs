@@ -27,11 +27,20 @@ namespace MacWallpaper
         {
             InitializeComponent();
             toggleSwitch1.IsOn = _settings.AutoPlay;
+            toggleSwitch2.IsOn = Helper.CheckStartOnBoot();
         }
 
         private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
         {
             _settings.AutoPlay = toggleSwitch1.IsOn;
+        }
+
+        private void ToggleSwitch_Toggled2(object sender, RoutedEventArgs e)
+        {
+            if (toggleSwitch2.IsOn)
+                Helper.SetStartOnBoot();
+            else
+                Helper.RemoveStartOnBoot();
         }
 
         string GetString(string name)
@@ -61,7 +70,7 @@ namespace MacWallpaper
                 cate.assets = new List<Ass>();
                 foreach (var item2 in model.assets.Where(x => x.categories.Contains(item.id)))
                 {
-                    string v = Helper.GetUrlFilePath(item2.url4KSDR240FPS, Helper._downloadPath);
+                    string v = Helper2.GetUrlFilePath(item2.url4KSDR240FPS, Helper2._downloadPath);
                     Ass ass = new Ass
                     {
                         id = item2.id,
@@ -105,7 +114,7 @@ namespace MacWallpaper
 
             foreach (var asset in asses)
             {
-                string v2 = Helper.GetUrlFilePath(asset.previewImage, Helper.imgsPath);
+                string v2 = Helper2.GetUrlFilePath(asset.previewImage, Helper2.imgsPath);
                 if (!File.Exists(v2))
                 {
                     await webClient.DownloadFileTaskAsync(asset.previewImage, v2);
@@ -116,7 +125,7 @@ namespace MacWallpaper
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Helper.CreateFolder();
+            Helper2.CreateFolder();
             LoadData();
             DownloadImage(_asses);
         }
@@ -257,7 +266,7 @@ namespace MacWallpaper
                 if (e.Cancelled)
                     return;
 
-                string v = Helper.GetUrlFilePath(ass.downloadURL, Helper._downloadPath);
+                string v = Helper2.GetUrlFilePath(ass.downloadURL, Helper2._downloadPath);
                 ass.downloadState = DownloadState.downloaded;
                 ass.filePath = v;
                 File.Move(tmpfile, v);

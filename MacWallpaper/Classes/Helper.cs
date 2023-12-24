@@ -45,12 +45,13 @@ namespace DreamScene2
             return startOnBoot;
         }
 
-        //public static void SetStartOnBoot()
-        //{
-        //    RegistryKey startupKey = Registry.CurrentUser.OpenSubKey(STARTUP_KEY, true);
-        //    startupKey.SetValue(Constant.ProjectName, $"\"{Application.ExecutablePath}\" -b");
-        //    startupKey.Close();
-        //}
+        public static void SetStartOnBoot()
+        {
+            var file=Process.GetCurrentProcess().MainModule.FileName;
+            RegistryKey startupKey = Registry.CurrentUser.OpenSubKey(STARTUP_KEY, true);
+            startupKey.SetValue(Constant.ProjectName, $"\"{file}\" -b");
+            startupKey.Close();
+        }
 
         public static void RemoveStartOnBoot()
         {
