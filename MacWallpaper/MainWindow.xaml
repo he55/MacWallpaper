@@ -69,7 +69,7 @@
                 </StackPanel>
             </Grid>
         <Border DockPanel.Dock="Top" Height="1" Background="{DynamicResource SystemControlBackgroundBaseLowBrush}" Margin="0,10,0,10"/>
-        <ui:GridView x:Name="gridView" ItemContainerStyle="{StaticResource GridViewItemStyle}" 
+        <ui:GridView x:Name="gridView" 
            ItemsSource="{Binding SelectedItem.assets, ElementName=listBox}" SelectionChanged="gridView_SelectionChanged">
             <ui:GridView.ItemTemplate>
                 <DataTemplate>

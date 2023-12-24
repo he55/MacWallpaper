@@ -10,7 +10,7 @@
                 <ui:ThemeResources />
                 <ui:XamlControlsResources />
                 <!-- Other merged dictionaries here -->
-                <ResourceDictionary Source="/ListView/GridView.xaml"/>
+                <ResourceDictionary Source="/GridView.xaml"/>
                 <ResourceDictionary Source="/i18n/en.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <!-- Other app resources here -->
