@@ -11,9 +11,6 @@
          xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True">
     <Window.Resources>
-        <Style x:Key="GridViewItemStyle" TargetType="ui:GridViewItem" BasedOn="{StaticResource MyGridViewItem}">
-            <Setter Property="VerticalContentAlignment" Value="Top"/>
-        </Style>
         <local:DownloadStateToVisibilityConverter State="none" x:Key="noneConverter"/>
         <local:DownloadStateToVisibilityConverter State="downloading" x:Key="downloadingConverter"/>
         <local:DownloadStateToVisibilityConverter State="downloaded" x:Key="downloadedConverter"/>
@@ -88,7 +85,7 @@
                     </StackPanel>
                     <DataTemplate.Triggers>
                         <DataTrigger Binding="{Binding isSelected}" Value="True">
-                            <Setter TargetName="border" Property="BorderBrush" Value="#ff3162db"/>
+                            <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource SystemControlHighlightAccentBrush}"/>
                         </DataTrigger>
                     </DataTemplate.Triggers>
                 </DataTemplate>
