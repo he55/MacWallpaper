@@ -130,6 +130,13 @@ namespace MacWallpaper
             DownloadImage(_asses);
         }
 
+        private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            gridView.ItemsSource = ((Cate)listBox.SelectedItem).assets;
+            if (gridView.Items.Count > 0)
+                gridView.ScrollIntoView(gridView.Items[0]);
+        }
+
         private void gridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Ass selectedItem = (Ass)gridView.SelectedItem;
