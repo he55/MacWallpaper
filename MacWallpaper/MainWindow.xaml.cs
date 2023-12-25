@@ -280,7 +280,7 @@ namespace MacWallpaper
             };
             webClient.DownloadProgressChanged += (object sender, DownloadProgressChangedEventArgs e) =>
             {
-                ass.progress = e.BytesReceived / (double)e.TotalBytesToReceive * 100;
+                ass.progress =e.ProgressPercentage;
             };
             try
             {
