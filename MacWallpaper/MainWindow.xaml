@@ -80,11 +80,17 @@
                                 </Border.Background>
                             </Border>
                         </Border>
-                        <TextBlock Width="100" Text="{Binding name}" TextWrapping="Wrap" TextAlignment="Center" FontSize="10" FontWeight="Bold" Margin="0,2,0,0"/>
+                        <TextBlock Width="100"  TextWrapping="Wrap" TextAlignment="Center" FontSize="10" FontWeight="Bold" Margin="0,2,0,0">
+                            <Run Text="{Binding name}"/>
+                            <Run x:Name="run" Text="!"/>
+                        </TextBlock>
                     </StackPanel>
                     <DataTemplate.Triggers>
                         <DataTrigger Binding="{Binding isSelected}" Value="True">
                             <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource SystemControlHighlightAccentBrush}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding downloadState}" Value="downloaded">
+                            <Setter TargetName="run" Property="Text" Value=""/>
                         </DataTrigger>
                     </DataTemplate.Triggers>
                 </DataTemplate>
