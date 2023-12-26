@@ -82,7 +82,7 @@
                         </Border>
                         <TextBlock Width="100"  TextWrapping="Wrap" TextAlignment="Center" FontSize="10" FontWeight="Bold" Margin="0,2,0,0">
                             <Run Text="{Binding name}"/>
-                            <Run x:Name="run" Text="!"/>
+                            <Run x:Name="run" Text="↓"/>
                         </TextBlock>
                     </StackPanel>
                     <DataTemplate.Triggers>
