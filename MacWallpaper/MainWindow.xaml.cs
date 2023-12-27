@@ -1,4 +1,5 @@
 ﻿using DreamScene2;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -19,6 +20,8 @@ namespace MacWallpaper
     /// </summary>
     public partial class MainWindow : Window
     {
+        System.Windows.Forms.NotifyIcon notifyIcon1;
+
         Settings _settings = Settings.Load();
         Ass _lastSelectedItem;
         List<Ass> _asses;
@@ -26,8 +29,69 @@ namespace MacWallpaper
         public MainWindow()
         {
             InitializeComponent();
+            InitNotifyIcon();
             toggleSwitch1.IsOn = _settings.AutoPlay;
             toggleSwitch2.IsOn = Helper.CheckStartOnBoot();
+        }
+
+         void InitNotifyIcon()
+        {
+            var toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripMenuItem1.Text = "Show";
+            toolStripMenuItem1.Click += toolStripMenuItem1_Click;
+
+            var toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripMenuItem2.Text = "Exit";
+            toolStripMenuItem2.Click += toolStripMenuItem2_Click;
+
+            var contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip();
+            contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            toolStripMenuItem1,
+            toolStripMenuItem2});
+
+
+            notifyIcon1 = new System.Windows.Forms.NotifyIcon();
+            notifyIcon1.ContextMenuStrip = contextMenuStrip1;
+            notifyIcon1.Text = "4kwallpaper";
+            notifyIcon1.Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Windows.Forms.Application.ExecutablePath);
+            notifyIcon1.DoubleClick += NotifyIcon1_DoubleClick;
+            notifyIcon1.Visible = true;
+        }
+
+        private void NotifyIcon1_DoubleClick(object sender, EventArgs e)
+        {
+            this.Show();
+            this.Activate();
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            this.Show();
+            this.Activate();
+        }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            Settings.Save();
+
+            List<Ass> asses = _asses.Where(x => x.downloadState == DownloadState.downloading).ToList();
+            if (asses.Count == 0)
+            {
+                Environment.Exit(0);
+                return;
+            }
+
+            this.Show();
+            this.Activate();
+
+            if (MessageBox.Show("正在下载文件，是否确认退出", "4kwallpaper", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+            {
+                foreach (Ass ass in asses)
+                {
+                    ass.CancelDownload();
+                }
+                Environment.Exit(0);
+            }
         }
 
         private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
@@ -156,22 +220,9 @@ namespace MacWallpaper
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
+            e.Cancel = true;
+            this.Hide();
             Settings.Save();
-
-            List<Ass> asses = _asses.Where(x => x.downloadState == DownloadState.downloading).ToList();
-            if (asses.Count == 0)
-                return;
-
-            if (MessageBox.Show("正在下载文件，是否确认退出", "4kwallpaper", MessageBoxButton.OKCancel) != MessageBoxResult.OK)
-            {
-                e.Cancel = true;
-                return;
-            }
-
-            foreach (Ass ass in asses)
-            {
-                ass.CancelDownload();
-            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
