@@ -34,10 +34,10 @@ namespace MacWallpaper
             toggleSwitch2.IsOn = Helper.CheckStartOnBoot();
         }
 
-         void InitNotifyIcon()
+        void InitNotifyIcon()
         {
             var toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            toolStripMenuItem1.Text =I18nWpf.GetString("LMenuShow");
+            toolStripMenuItem1.Text = I18nWpf.GetString("LMenuShow");
             toolStripMenuItem1.Click += toolStripMenuItem1_Click;
 
             var toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
@@ -77,6 +77,7 @@ namespace MacWallpaper
             List<Ass> asses = _asses.Where(x => x.downloadState == DownloadState.downloading).ToList();
             if (asses.Count == 0)
             {
+                notifyIcon1.Dispose();
                 Environment.Exit(0);
                 return;
             }
@@ -90,6 +91,8 @@ namespace MacWallpaper
                 {
                     ass.CancelDownload();
                 }
+
+                notifyIcon1.Dispose();
                 Environment.Exit(0);
             }
         }
@@ -107,18 +110,17 @@ namespace MacWallpaper
                 Helper.RemoveStartOnBoot();
         }
 
-        string GetString(string name)
-        {
-            if (lang.TryGetValue(name, out string value))
-                return value;
-            return "";
-        }
-
-        Dictionary<string, string> lang;
         void LoadData()
         {
             string vvv = File.ReadAllText($@"data\{_settings.Lang}.json");
-            lang = JSONParser.FromJson<Dictionary<string, string>>(vvv);
+            var lang = JSONParser.FromJson<Dictionary<string, string>>(vvv);
+
+            string GetString(string key)
+            {
+                if (lang.TryGetValue(key, out string val))
+                    return val;
+                return "";
+            }
 
             string v11 = File.ReadAllText(@"data\entries.json");
             var model = JSONParser.FromJson<Rootobject>(v11);
@@ -331,7 +333,7 @@ namespace MacWallpaper
             };
             webClient.DownloadProgressChanged += (object sender, DownloadProgressChangedEventArgs e) =>
             {
-                ass.progress =e.ProgressPercentage;
+                ass.progress = e.ProgressPercentage;
             };
             try
             {
