@@ -6,4 +6,7 @@
     <sys:String x:Key="LLanguage">English</sys:String>
     <sys:String x:Key="LOpenFolder">Open Folder</sys:String>
     <sys:String x:Key="LPreview">Preview</sys:String>
+    <sys:String x:Key="LCancelDownloadConfirmTip">Are you cancel download?</sys:String>
+    <sys:String x:Key="LMenuShow">Show</sys:String>
+    <sys:String x:Key="LMenuExit">Exit</sys:String>
 </ResourceDictionary>

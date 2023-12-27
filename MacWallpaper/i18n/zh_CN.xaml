@@ -6,4 +6,7 @@
     <sys:String x:Key="LLanguage">中文</sys:String>
     <sys:String x:Key="LOpenFolder">打开文件夹</sys:String>
     <sys:String x:Key="LPreview">预览</sys:String>
+    <sys:String x:Key="LCancelDownloadConfirmTip">正在下载文件，是否确认退出</sys:String>
+    <sys:String x:Key="LMenuShow">显示</sys:String>
+    <sys:String x:Key="LMenuExit">退出</sys:String>
 </ResourceDictionary>

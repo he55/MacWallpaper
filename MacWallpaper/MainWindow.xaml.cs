@@ -37,7 +37,7 @@ namespace MacWallpaper
          void InitNotifyIcon()
         {
             var toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            toolStripMenuItem1.Text = "Show";
+            toolStripMenuItem1.Text =I18nWpf.GetString("LMenuShow");
             toolStripMenuItem1.Click += toolStripMenuItem1_Click;
 
             var toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
