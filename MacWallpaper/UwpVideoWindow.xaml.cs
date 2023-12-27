@@ -7,13 +7,13 @@ using Windows.UI.Xaml.Controls;
 namespace MacWallpaper
 {
     /// <summary>
-    /// Interaction logic for VideoWindow.xaml
+    /// Interaction logic for UwpVideoWindow.xaml
     /// </summary>
-    public partial class VideoWindow : Window
+    public partial class UwpVideoWindow : Window
     {
         MediaPlayerElement mediaPlayerElement;
 
-        public VideoWindow()
+        public UwpVideoWindow()
         {
             InitializeComponent();
 

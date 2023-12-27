@@ -360,7 +360,7 @@ namespace MacWallpaper
 
         public void Preview()
         {
-            VideoWindow videoWindow = new VideoWindow();
+            UwpVideoWindow videoWindow = new UwpVideoWindow();
             videoWindow.Source = filePath;
             videoWindow.Show();
         }
