@@ -20,10 +20,9 @@ namespace MacWallpaper
     /// </summary>
     public partial class MainWindow : Window
     {
-        System.Windows.Forms.NotifyIcon notifyIcon1;
-
+        System.Windows.Forms.NotifyIcon _notifyIcon;
         Settings _settings = Settings.Load();
-        WallpaperAsset _lastSelectedItem;
+        WallpaperAsset _lastSelectedAsset;
         List<WallpaperAsset> _assets;
 
         public MainWindow()
@@ -49,12 +48,12 @@ namespace MacWallpaper
             toolStripMenuItem1,
             toolStripMenuItem2});
 
-            notifyIcon1 = new System.Windows.Forms.NotifyIcon();
-            notifyIcon1.ContextMenuStrip = contextMenuStrip1;
-            notifyIcon1.Text = "4kwallpaper";
-            notifyIcon1.Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Windows.Forms.Application.ExecutablePath);
-            notifyIcon1.DoubleClick += delegate { ShowWindow(); };
-            notifyIcon1.Visible = true;
+            _notifyIcon = new System.Windows.Forms.NotifyIcon();
+            _notifyIcon.ContextMenuStrip = contextMenuStrip1;
+            _notifyIcon.Text = "4kwallpaper";
+            _notifyIcon.Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Windows.Forms.Application.ExecutablePath);
+            _notifyIcon.DoubleClick += delegate { ShowWindow(); };
+            _notifyIcon.Visible = true;
         }
 
         void ShowWindow()
@@ -71,7 +70,7 @@ namespace MacWallpaper
             List<WallpaperAsset> assets = _assets.Where(x => x.downloadState == DownloadState.downloading).ToList();
             if (assets.Count == 0)
             {
-                notifyIcon1.Dispose();
+                _notifyIcon.Dispose();
                 Environment.Exit(0);
                 return;
             }
@@ -85,7 +84,7 @@ namespace MacWallpaper
                     asset.CancelDownload();
                 }
 
-                notifyIcon1.Dispose();
+                _notifyIcon.Dispose();
                 Environment.Exit(0);
             }
         }
@@ -106,17 +105,17 @@ namespace MacWallpaper
         void LoadData()
         {
             string langJson = File.ReadAllText($@"data\{_settings.Lang}.json");
-            var lang = JSONParser.FromJson<Dictionary<string, string>>(langJson);
+            var langDict = JSONParser.FromJson<Dictionary<string, string>>(langJson);
 
             string GetString(string key)
             {
-                if (lang.TryGetValue(key, out string val))
+                if (langDict.TryGetValue(key, out string val))
                     return val;
                 return "";
             }
 
-            string dataJson = File.ReadAllText(@"data\entries.json");
-            var model = JSONParser.FromJson<Rootobject>(dataJson);
+            string entriesJson = File.ReadAllText(@"data\entries.json");
+            var model = JSONParser.FromJson<EntriesObject>(entriesJson);
 
             List<WallpaperAsset> assets = new List<WallpaperAsset>();
             List<WallpaperCategory> categories = new List<WallpaperCategory>();
@@ -129,7 +128,7 @@ namespace MacWallpaper
                 category.assets = new List<WallpaperAsset>();
                 foreach (var item2 in model.assets.Where(x => x.categories.Contains(item.id)))
                 {
-                    string v = Helper2.GetUrlFilePath(item2.url4KSDR240FPS, Helper2._downloadPath);
+                    string filePath = Helper2.GetUrlFilePath(item2.url4KSDR240FPS, Helper2._downloadPath);
                     WallpaperAsset asset = new WallpaperAsset
                     {
                         id = item2.id,
@@ -137,10 +136,10 @@ namespace MacWallpaper
                         previewImage = item2.previewImage,
                         downloadURL = item2.url4KSDR240FPS,
                     };
-                    if (File.Exists(v))
+                    if (File.Exists(filePath))
                     {
                         asset._downloadState = DownloadState.downloaded;
-                        asset.filePath = v;
+                        asset.filePath = filePath;
                     }
                     assets.Add(asset);
                     category.assets.Add(asset);
@@ -150,21 +149,21 @@ namespace MacWallpaper
 
             _assets = assets;
             listBox.ItemsSource = categories;
-            listBox.SelectedIndex = _settings.SelectedIdx;
+            listBox.SelectedIndex = _settings.SelectedIndex;
 
-            WallpaperAsset ass1 = null;
+            WallpaperAsset selectedAsset = null;
             string id = _settings.SelectedId;
             if (!string.IsNullOrEmpty(id))
             {
-                ass1 = _assets.Where(x => x.id == id).FirstOrDefault();
+                selectedAsset = _assets.Where(x => x.id == id).FirstOrDefault();
             }
 
-            if (ass1 == null)
-                ass1 = _assets[0];
+            if (selectedAsset == null)
+                selectedAsset = _assets[0];
 
-            ass1.isSelected = true;
-            myHeaderControl.DataContext = ass1;
-            _lastSelectedItem = ass1;
+            selectedAsset.isSelected = true;
+            headerGrid.DataContext = selectedAsset;
+            _lastSelectedAsset = selectedAsset;
         }
 
         static async void DownloadImage(List<WallpaperAsset> assets)
@@ -201,14 +200,14 @@ namespace MacWallpaper
             WallpaperAsset selectedItem = (WallpaperAsset)gridView.SelectedItem;
             if (selectedItem != null)
             {
-                if (_lastSelectedItem != null)
-                    _lastSelectedItem.isSelected = false;
+                if (_lastSelectedAsset != null)
+                    _lastSelectedAsset.isSelected = false;
 
-                _lastSelectedItem = selectedItem;
+                _lastSelectedAsset = selectedItem;
                 selectedItem.isSelected = true;
-                myHeaderControl.DataContext = selectedItem;
+                headerGrid.DataContext = selectedItem;
 
-                _settings.SelectedIdx = listBox.SelectedIndex;
+                _settings.SelectedIndex = listBox.SelectedIndex;
                 _settings.SelectedId = selectedItem.id;
             }
         }
@@ -230,22 +229,22 @@ namespace MacWallpaper
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            _lastSelectedItem.Download();
+            _lastSelectedAsset.Download();
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            _lastSelectedItem.CancelDownload();
+            _lastSelectedAsset.CancelDownload();
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            _lastSelectedItem.OpenFolder();
+            _lastSelectedAsset.OpenFolder();
         }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
-            _lastSelectedItem.Preview();
+            _lastSelectedAsset.Preview();
         }
     }
 
@@ -317,10 +316,9 @@ namespace MacWallpaper
                 if (e.Cancelled)
                     return;
 
-                string v = Helper2.GetUrlFilePath(downloadURL, Helper2._downloadPath);
+                filePath= Helper2.GetUrlFilePath(downloadURL, Helper2._downloadPath);
                 downloadState = DownloadState.downloaded;
-                filePath = v;
-                File.Move(_tempfile, v);
+                File.Move(_tempfile, filePath);
             };
             _webClient.DownloadProgressChanged += (object sender, DownloadProgressChangedEventArgs e) =>
             {

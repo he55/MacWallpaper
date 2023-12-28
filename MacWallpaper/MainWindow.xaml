@@ -27,7 +27,7 @@
             <ListBox x:Name="listBox" DisplayMemberPath="title" SelectionChanged="listBox_SelectionChanged"/>
             <Button Content="{DynamicResource LLanguage}" VerticalAlignment="Bottom" Margin="10,0,0,10" Click="Button_Click"/>
         </Grid>
-            <Grid x:Name="myHeaderControl" DockPanel.Dock="Top"  Margin="10,0,20,0">
+            <Grid x:Name="headerGrid" DockPanel.Dock="Top"  Margin="10,0,20,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
