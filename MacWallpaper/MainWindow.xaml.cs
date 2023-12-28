@@ -33,6 +33,27 @@ namespace MacWallpaper
             toggleSwitch2.IsOn = Helper.CheckStartOnBoot();
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            Helper2.CreateFolder();
+            LoadData();
+            DownloadImages(_assets);
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            e.Cancel = true;
+            this.Hide();
+            Settings.Save();
+        }
+
+        void ShowWindow()
+        {
+            this.WindowState = WindowState.Normal;
+            this.Show();
+            this.Activate();
+        }
+
         void InitNotifyIcon()
         {
             var toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,13 +75,6 @@ namespace MacWallpaper
             _notifyIcon.Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Windows.Forms.Application.ExecutablePath);
             _notifyIcon.DoubleClick += delegate { ShowWindow(); };
             _notifyIcon.Visible = true;
-        }
-
-        void ShowWindow()
-        {
-            this.WindowState = WindowState.Normal;
-            this.Show();
-            this.Activate();
         }
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
@@ -87,19 +101,6 @@ namespace MacWallpaper
                 _notifyIcon.Dispose();
                 Environment.Exit(0);
             }
-        }
-
-        private void ToggleAutoPlay(object sender, RoutedEventArgs e)
-        {
-            _settings.AutoPlay = toggleSwitch1.IsOn;
-        }
-
-        private void ToggleStartOnBoot(object sender, RoutedEventArgs e)
-        {
-            if (toggleSwitch2.IsOn)
-                Helper.SetStartOnBoot();
-            else
-                Helper.RemoveStartOnBoot();
         }
 
         void LoadData()
@@ -181,13 +182,6 @@ namespace MacWallpaper
             }
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            Helper2.CreateFolder();
-            LoadData();
-            DownloadImages(_assets);
-        }
-
         private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             gridView.ItemsSource = ((WallpaperCategory)listBox.SelectedItem).assets;
@@ -212,19 +206,25 @@ namespace MacWallpaper
             }
         }
 
-        private void Window_Closing(object sender, CancelEventArgs e)
-        {
-            e.Cancel = true;
-            this.Hide();
-            Settings.Save();
-        }
-
         private void ToggleLanguage(object sender, RoutedEventArgs e)
         {
             if (_settings.Language == "en")
                 _settings.Language = "zh_CN";
             else
                 _settings.Language = "en";
+        }
+
+        private void ToggleAutoPlay(object sender, RoutedEventArgs e)
+        {
+            _settings.AutoPlay = toggleSwitch1.IsOn;
+        }
+
+        private void ToggleStartOnBoot(object sender, RoutedEventArgs e)
+        {
+            if (toggleSwitch2.IsOn)
+                Helper.SetStartOnBoot();
+            else
+                Helper.RemoveStartOnBoot();
         }
 
         private void Download(object sender, RoutedEventArgs e)
