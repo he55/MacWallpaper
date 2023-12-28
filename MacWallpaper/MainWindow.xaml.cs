@@ -38,7 +38,7 @@ namespace MacWallpaper
         {
             var toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuItem1.Text = I18nWpf.GetString("LMenuShow");
-            toolStripMenuItem1.Click += toolStripMenuItem1_Click;
+            toolStripMenuItem1.Click += delegate { ShowWindow(); };
 
             var toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuItem2.Text = "Exit";
@@ -49,23 +49,17 @@ namespace MacWallpaper
             toolStripMenuItem1,
             toolStripMenuItem2});
 
-
             notifyIcon1 = new System.Windows.Forms.NotifyIcon();
             notifyIcon1.ContextMenuStrip = contextMenuStrip1;
             notifyIcon1.Text = "4kwallpaper";
             notifyIcon1.Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Windows.Forms.Application.ExecutablePath);
-            notifyIcon1.DoubleClick += NotifyIcon1_DoubleClick;
+            notifyIcon1.DoubleClick += delegate { ShowWindow(); };
             notifyIcon1.Visible = true;
         }
 
-        private void NotifyIcon1_DoubleClick(object sender, EventArgs e)
+        void ShowWindow()
         {
-            this.Show();
-            this.Activate();
-        }
-
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
-        {
+            this.WindowState = WindowState.Normal;
             this.Show();
             this.Activate();
         }
@@ -82,8 +76,7 @@ namespace MacWallpaper
                 return;
             }
 
-            this.Show();
-            this.Activate();
+            ShowWindow();
 
             if (MessageBox.Show("正在下载文件，是否确认退出", "4kwallpaper", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
             {
