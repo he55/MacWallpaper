@@ -35,7 +35,7 @@ namespace MacWallpaper
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Helper2.CreateFolder();
+            FolderHelper.CreateFolder();
             LoadData();
             DownloadImages(_assets);
         }
@@ -129,7 +129,7 @@ namespace MacWallpaper
                 category.assets = new List<WallpaperAsset>();
                 foreach (var item2 in model.assets.Where(x => x.categories.Contains(item.id)))
                 {
-                    string filePath = Helper2.GetUrlFilePath(item2.url4KSDR240FPS, Helper2._downloadPath);
+                    string filePath = FolderHelper.GetFilePathForURL(item2.url4KSDR240FPS, FolderHelper.DownloadPath);
                     WallpaperAsset asset = new WallpaperAsset
                     {
                         id = item2.id,
@@ -173,7 +173,7 @@ namespace MacWallpaper
 
             foreach (var asset in assets)
             {
-                string imagePath = Helper2.GetUrlFilePath(asset.previewImage, Helper2.imgsPath);
+                string imagePath = FolderHelper.GetFilePathForURL(asset.previewImage, FolderHelper.ImageCachePath);
                 if (!File.Exists(imagePath))
                 {
                     await webClient.DownloadFileTaskAsync(asset.previewImage, imagePath);
@@ -316,7 +316,7 @@ namespace MacWallpaper
                 if (e.Cancelled)
                     return;
 
-                filePath= Helper2.GetUrlFilePath(downloadURL, Helper2._downloadPath);
+                filePath= FolderHelper.GetFilePathForURL(downloadURL, FolderHelper.DownloadPath);
                 downloadState = DownloadState.downloaded;
                 File.Move(_tempfile, filePath);
             };
