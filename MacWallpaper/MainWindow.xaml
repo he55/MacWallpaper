@@ -43,13 +43,13 @@
                     </Border>
                     <Border Style="{StaticResource BorderStyle}">
                         <Grid >
-                            <TextBlock Text="显示为屏幕保护程序" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            <TextBlock Text="{DynamicResource LAutoPlay}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                             <ui:ToggleSwitch x:Name="toggleSwitch1" Toggled="ToggleAutoPlay" OnContent="" OffContent=""  HorizontalAlignment="Right" Width="50"/>
                         </Grid>
                     </Border>
                 <Border Style="{StaticResource BorderStyle}">
                     <Grid >
-                        <TextBlock Text="开机启动" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <TextBlock Text="{DynamicResource LStartOnBoot}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                         <ui:ToggleSwitch x:Name="toggleSwitch2" Toggled="ToggleStartOnBoot" OnContent="" OffContent=""  HorizontalAlignment="Right" Width="50"/>
                     </Grid>
                 </Border>
