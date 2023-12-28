@@ -25,7 +25,7 @@
     <DockPanel>
         <Grid Width="140">
             <ListBox x:Name="listBox" DisplayMemberPath="title" SelectionChanged="listBox_SelectionChanged"/>
-            <Button Content="{DynamicResource LLanguage}" VerticalAlignment="Bottom" Margin="10,0,0,10" Click="Button_Click"/>
+            <Button Content="{DynamicResource LLanguage}" VerticalAlignment="Bottom" Margin="10,0,0,10" Click="ToggleLanguage"/>
         </Grid>
             <Grid x:Name="headerGrid" DockPanel.Dock="Top"  Margin="10,0,20,0">
                 <Grid.ColumnDefinitions>
@@ -44,24 +44,24 @@
                     <Border Style="{StaticResource BorderStyle}">
                         <Grid >
                             <TextBlock Text="显示为屏幕保护程序" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                            <ui:ToggleSwitch x:Name="toggleSwitch1" Toggled="ToggleSwitch_Toggled" OnContent="" OffContent=""  HorizontalAlignment="Right" Width="50"/>
+                            <ui:ToggleSwitch x:Name="toggleSwitch1" Toggled="ToggleAutoPlay" OnContent="" OffContent=""  HorizontalAlignment="Right" Width="50"/>
                         </Grid>
                     </Border>
                 <Border Style="{StaticResource BorderStyle}">
                     <Grid >
                         <TextBlock Text="开机启动" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <ui:ToggleSwitch x:Name="toggleSwitch2" Toggled="ToggleSwitch_Toggled2" OnContent="" OffContent=""  HorizontalAlignment="Right" Width="50"/>
+                        <ui:ToggleSwitch x:Name="toggleSwitch2" Toggled="ToggleStartOnBoot" OnContent="" OffContent=""  HorizontalAlignment="Right" Width="50"/>
                     </Grid>
                 </Border>
                 <DockPanel>
-                        <Button Content="{DynamicResource LDownload}" Click="Button_Click_1" 
+                        <Button Content="{DynamicResource LDownload}" Click="Download" 
                      Visibility="{Binding downloadState, Converter={StaticResource noneConverter}}"/>
-                        <Button Content="{DynamicResource LCancelDownload}" Click="Button_Click_2" 
+                        <Button Content="{DynamicResource LCancelDownload}" Click="CancelDownload" 
        Visibility="{Binding downloadState, Converter={StaticResource downloadingConverter}}"/>
 
                         <StackPanel Orientation="Horizontal" Visibility="{Binding downloadState, Converter={StaticResource downloadedConverter}}">
-                            <Button Content="{DynamicResource LOpenFolder}" Click="Button_Click_3"  />
-                            <Button Content="{DynamicResource LPreview}" Click="Button_Click_4"  Margin="10,0,0,0" />
+                            <Button Content="{DynamicResource LOpenFolder}" Click="OpenFolder"  />
+                            <Button Content="{DynamicResource LPreview}" Click="Preview"  Margin="10,0,0,0" />
                         </StackPanel>
 
                         <ui:ProgressBar Value="{Binding progress}" Visibility="{Binding downloadState, Converter={StaticResource downloadingConverter}}" Margin="20,0"/>

@@ -89,12 +89,12 @@ namespace MacWallpaper
             }
         }
 
-        private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
+        private void ToggleAutoPlay(object sender, RoutedEventArgs e)
         {
             _settings.AutoPlay = toggleSwitch1.IsOn;
         }
 
-        private void ToggleSwitch_Toggled2(object sender, RoutedEventArgs e)
+        private void ToggleStartOnBoot(object sender, RoutedEventArgs e)
         {
             if (toggleSwitch2.IsOn)
                 Helper.SetStartOnBoot();
@@ -104,7 +104,7 @@ namespace MacWallpaper
 
         void LoadData()
         {
-            string langJson = File.ReadAllText($@"data\{_settings.Lang}.json");
+            string langJson = File.ReadAllText($@"data\{_settings.Language}.json");
             var langDict = JSONParser.FromJson<Dictionary<string, string>>(langJson);
 
             string GetString(string key)
@@ -166,7 +166,7 @@ namespace MacWallpaper
             _lastSelectedAsset = selectedAsset;
         }
 
-        static async void DownloadImage(List<WallpaperAsset> assets)
+        static async void DownloadImages(List<WallpaperAsset> assets)
         {
             WebClient webClient = new WebClient();
 
@@ -185,7 +185,7 @@ namespace MacWallpaper
         {
             Helper2.CreateFolder();
             LoadData();
-            DownloadImage(_assets);
+            DownloadImages(_assets);
         }
 
         private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -219,30 +219,30 @@ namespace MacWallpaper
             Settings.Save();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ToggleLanguage(object sender, RoutedEventArgs e)
         {
-            if (_settings.Lang == "en")
-                _settings.Lang = "zh_CN";
+            if (_settings.Language == "en")
+                _settings.Language = "zh_CN";
             else
-                _settings.Lang = "en";
+                _settings.Language = "en";
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void Download(object sender, RoutedEventArgs e)
         {
             _lastSelectedAsset.Download();
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void CancelDownload(object sender, RoutedEventArgs e)
         {
             _lastSelectedAsset.CancelDownload();
         }
 
-        private void Button_Click_3(object sender, RoutedEventArgs e)
+        private void OpenFolder(object sender, RoutedEventArgs e)
         {
             _lastSelectedAsset.OpenFolder();
         }
 
-        private void Button_Click_4(object sender, RoutedEventArgs e)
+        private void Preview(object sender, RoutedEventArgs e)
         {
             _lastSelectedAsset.Preview();
         }

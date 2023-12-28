@@ -10,7 +10,7 @@ namespace DreamScene2
 
         private Settings() { }
 
-        public string Lang { get; set; } = "en";
+        public string Language { get; set; } = "en";
         public bool FirstRun { get; set; } = true;
         public bool AutoPlay { get; set; } = true;
         public int SelectedIndex { get; set; }

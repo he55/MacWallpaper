@@ -12,7 +12,7 @@ namespace MacWallpaper
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            if (Settings.Load().Lang == "zh_CN")
+            if (Settings.Load().Language == "zh_CN")
                 Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("pack://application:,,,/i18n/zh_CN.xaml") });
 
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
