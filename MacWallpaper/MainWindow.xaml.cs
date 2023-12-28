@@ -7,7 +7,6 @@ using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
-using TinyJson;
 
 namespace MacWallpaper
 {
@@ -102,7 +101,7 @@ namespace MacWallpaper
         void LoadData()
         {
             string langJson = File.ReadAllText($@"data\{_settings.Language}.json");
-            var langDict = JSONParser.FromJson<Dictionary<string, string>>(langJson);
+            var langDict = TinyJson.JSONParser.FromJson<Dictionary<string, string>>(langJson);
 
             string GetString(string key)
             {
@@ -112,7 +111,7 @@ namespace MacWallpaper
             }
 
             string entriesJson = File.ReadAllText(@"data\entries.json");
-            var model = JSONParser.FromJson<EntriesObject>(entriesJson);
+            var model = TinyJson.JSONParser.FromJson<EntriesObject>(entriesJson);
 
             List<WallpaperAsset> assets = new List<WallpaperAsset>();
             List<WallpaperCategory> categories = new List<WallpaperCategory>();
