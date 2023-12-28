@@ -23,8 +23,8 @@ namespace MacWallpaper
         System.Windows.Forms.NotifyIcon notifyIcon1;
 
         Settings _settings = Settings.Load();
-        Ass _lastSelectedItem;
-        List<Ass> _asses;
+        WallpaperAsset _lastSelectedItem;
+        List<WallpaperAsset> _assets;
 
         public MainWindow()
         {
@@ -41,7 +41,7 @@ namespace MacWallpaper
             toolStripMenuItem1.Click += delegate { ShowWindow(); };
 
             var toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            toolStripMenuItem2.Text = "Exit";
+            toolStripMenuItem2.Text = I18nWpf.GetString("LMenuExit");
             toolStripMenuItem2.Click += toolStripMenuItem2_Click;
 
             var contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip();
@@ -68,8 +68,8 @@ namespace MacWallpaper
         {
             Settings.Save();
 
-            List<Ass> asses = _asses.Where(x => x.downloadState == DownloadState.downloading).ToList();
-            if (asses.Count == 0)
+            List<WallpaperAsset> assets = _assets.Where(x => x.downloadState == DownloadState.downloading).ToList();
+            if (assets.Count == 0)
             {
                 notifyIcon1.Dispose();
                 Environment.Exit(0);
@@ -78,11 +78,11 @@ namespace MacWallpaper
 
             ShowWindow();
 
-            if (MessageBox.Show("正在下载文件，是否确认退出", "4kwallpaper", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+            if (MessageBox.Show(I18nWpf.GetString("LCancelDownloadConfirmTip"), "4kwallpaper", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
             {
-                foreach (Ass ass in asses)
+                foreach (WallpaperAsset asset in assets)
                 {
-                    ass.CancelDownload();
+                    asset.CancelDownload();
                 }
 
                 notifyIcon1.Dispose();
@@ -105,8 +105,8 @@ namespace MacWallpaper
 
         void LoadData()
         {
-            string vvv = File.ReadAllText($@"data\{_settings.Lang}.json");
-            var lang = JSONParser.FromJson<Dictionary<string, string>>(vvv);
+            string langJson = File.ReadAllText($@"data\{_settings.Lang}.json");
+            var lang = JSONParser.FromJson<Dictionary<string, string>>(langJson);
 
             string GetString(string key)
             {
@@ -115,22 +115,22 @@ namespace MacWallpaper
                 return "";
             }
 
-            string v11 = File.ReadAllText(@"data\entries.json");
-            var model = JSONParser.FromJson<Rootobject>(v11);
+            string dataJson = File.ReadAllText(@"data\entries.json");
+            var model = JSONParser.FromJson<Rootobject>(dataJson);
 
-            List<Ass> asses = new List<Ass>();
-            List<Cate> cates = new List<Cate>();
+            List<WallpaperAsset> assets = new List<WallpaperAsset>();
+            List<WallpaperCategory> categories = new List<WallpaperCategory>();
 
             foreach (var item in model.categories)
             {
-                Cate cate = new Cate();
-                cate.title = GetString(item.localizedNameKey);
-                cate.description = GetString(item.localizedDescriptionKey);
-                cate.assets = new List<Ass>();
+                WallpaperCategory category = new WallpaperCategory();
+                category.title = GetString(item.localizedNameKey);
+                category.description = GetString(item.localizedDescriptionKey);
+                category.assets = new List<WallpaperAsset>();
                 foreach (var item2 in model.assets.Where(x => x.categories.Contains(item.id)))
                 {
                     string v = Helper2.GetUrlFilePath(item2.url4KSDR240FPS, Helper2._downloadPath);
-                    Ass ass = new Ass
+                    WallpaperAsset asset = new WallpaperAsset
                     {
                         id = item2.id,
                         name = GetString(item2.localizedNameKey),
@@ -139,46 +139,46 @@ namespace MacWallpaper
                     };
                     if (File.Exists(v))
                     {
-                        ass.downloadState1 = DownloadState.downloaded;
-                        ass.filePath = v;
+                        asset._downloadState = DownloadState.downloaded;
+                        asset.filePath = v;
                     }
-                    asses.Add(ass);
-                    cate.assets.Add(ass);
+                    assets.Add(asset);
+                    category.assets.Add(asset);
                 }
-                cates.Add(cate);
+                categories.Add(category);
             }
 
-            _asses = asses;
-            listBox.ItemsSource = cates;
+            _assets = assets;
+            listBox.ItemsSource = categories;
             listBox.SelectedIndex = _settings.SelectedIdx;
 
-            Ass ass1 = null;
+            WallpaperAsset ass1 = null;
             string id = _settings.SelectedId;
             if (!string.IsNullOrEmpty(id))
             {
-                ass1 = _asses.Where(x => x.id == id).FirstOrDefault();
+                ass1 = _assets.Where(x => x.id == id).FirstOrDefault();
             }
 
             if (ass1 == null)
-                ass1 = _asses[0];
+                ass1 = _assets[0];
 
             ass1.isSelected = true;
             myHeaderControl.DataContext = ass1;
             _lastSelectedItem = ass1;
         }
 
-        static async void DownloadImage(List<Ass> asses)
+        static async void DownloadImage(List<WallpaperAsset> assets)
         {
             WebClient webClient = new WebClient();
 
-            foreach (var asset in asses)
+            foreach (var asset in assets)
             {
-                string v2 = Helper2.GetUrlFilePath(asset.previewImage, Helper2.imgsPath);
-                if (!File.Exists(v2))
+                string imagePath = Helper2.GetUrlFilePath(asset.previewImage, Helper2.imgsPath);
+                if (!File.Exists(imagePath))
                 {
-                    await webClient.DownloadFileTaskAsync(asset.previewImage, v2);
+                    await webClient.DownloadFileTaskAsync(asset.previewImage, imagePath);
                 }
-                asset.previewImage = v2;
+                asset.previewImage = imagePath;
             }
         }
 
@@ -186,19 +186,19 @@ namespace MacWallpaper
         {
             Helper2.CreateFolder();
             LoadData();
-            DownloadImage(_asses);
+            DownloadImage(_assets);
         }
 
         private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            gridView.ItemsSource = ((Cate)listBox.SelectedItem).assets;
+            gridView.ItemsSource = ((WallpaperCategory)listBox.SelectedItem).assets;
             if (gridView.Items.Count > 0)
                 gridView.ScrollIntoView(gridView.Items[0]);
         }
 
         private void gridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Ass selectedItem = (Ass)gridView.SelectedItem;
+            WallpaperAsset selectedItem = (WallpaperAsset)gridView.SelectedItem;
             if (selectedItem != null)
             {
                 if (_lastSelectedItem != null)
@@ -256,94 +256,92 @@ namespace MacWallpaper
         downloaded
     }
 
-    public class Cate
+    public class WallpaperCategory
     {
         public string title { get; set; }
         public string description { get; set; }
-        public List<Ass> assets { get; set; }
+        public List<WallpaperAsset> assets { get; set; }
     }
 
-    public class Ass : INotifyPropertyChanged
+    public class WallpaperAsset : INotifyPropertyChanged
     {
-        WebClient webClient;
-        string tmpfile;
+        WebClient _webClient;
+        string _tempfile;
 
-        private double progress1;
-        private bool isSelected1;
-        internal DownloadState downloadState1;
+        private double _progress;
+        private bool _isSelected;
+        internal DownloadState _downloadState;
 
         public string id { get; set; }
         public string name { get; set; }
         public string previewImage { get; set; }
         public string downloadURL { get; set; }
-
         public string filePath { get; set; }
         public DownloadState downloadState
         {
-            get => downloadState1;
+            get => _downloadState;
             set
             {
-                downloadState1 = value;
+                _downloadState = value;
                 OnPropertyChanged();
                 CommandManager.InvalidateRequerySuggested();
             }
         }
         public double progress
         {
-            get => progress1;
+            get => _progress;
             set
             {
-                progress1 = value;
+                _progress = value;
                 OnPropertyChanged();
             }
         }
         public bool isSelected
         {
-            get => isSelected1;
+            get => _isSelected;
             set
             {
-                isSelected1 = value;
+                _isSelected = value;
                 OnPropertyChanged();
             }
         }
 
         public async void Download()
         {
-            Ass ass = this;
-            ass.downloadState = DownloadState.downloading;
+            downloadState = DownloadState.downloading;
 
-            webClient = new WebClient();
-            tmpfile = Path.GetTempFileName();
-            webClient.DownloadFileCompleted += (object sender, AsyncCompletedEventArgs e) =>
+            _webClient = new WebClient();
+            _tempfile = Path.GetTempFileName();
+            _webClient.DownloadFileCompleted += (object sender, AsyncCompletedEventArgs e) =>
             {
                 if (e.Cancelled)
                     return;
 
-                string v = Helper2.GetUrlFilePath(ass.downloadURL, Helper2._downloadPath);
-                ass.downloadState = DownloadState.downloaded;
-                ass.filePath = v;
-                File.Move(tmpfile, v);
+                string v = Helper2.GetUrlFilePath(downloadURL, Helper2._downloadPath);
+                downloadState = DownloadState.downloaded;
+                filePath = v;
+                File.Move(_tempfile, v);
             };
-            webClient.DownloadProgressChanged += (object sender, DownloadProgressChangedEventArgs e) =>
+            _webClient.DownloadProgressChanged += (object sender, DownloadProgressChangedEventArgs e) =>
             {
-                ass.progress = e.ProgressPercentage;
+                progress = e.ProgressPercentage;
             };
             try
             {
-                await webClient.DownloadFileTaskAsync(ass.downloadURL, tmpfile);
+                await _webClient.DownloadFileTaskAsync(downloadURL, _tempfile);
             }
             catch { }
         }
 
         public async void CancelDownload()
         {
-            webClient.CancelAsync();
-            webClient = null;
+            _webClient.CancelAsync();
+            _webClient = null;
             downloadState = DownloadState.none;
             progress = 0;
 
             await Task.Delay(200);
-            File.Delete(tmpfile);
+            File.Delete(_tempfile);
         }
 
         public void OpenFolder()
@@ -358,15 +356,11 @@ namespace MacWallpaper
             videoWindow.Show();
         }
 
-
         public event PropertyChangedEventHandler PropertyChanged;
 
-        // Create the OnPropertyChanged method to raise the event
-        // The calling member's name will be used as the parameter.
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
-
 }
