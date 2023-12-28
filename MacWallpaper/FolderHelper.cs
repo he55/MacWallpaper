@@ -29,7 +29,7 @@ namespace MacWallpaper
         {
             string fileName = new Uri(url).Segments.Last();
             string filePath = Path.Combine(dir, fileName);
-            return Path.GetFullPath(filePath);
+            return filePath;
         }
     }
 }
