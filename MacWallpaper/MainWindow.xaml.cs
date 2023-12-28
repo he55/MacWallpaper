@@ -197,9 +197,9 @@ namespace MacWallpaper
                 if (_lastSelectedAsset != null)
                     _lastSelectedAsset.isSelected = false;
 
-                _lastSelectedAsset = selectedItem;
                 selectedItem.isSelected = true;
                 headerGrid.DataContext = selectedItem;
+                _lastSelectedAsset = selectedItem;
 
                 _settings.SelectedIndex = listBox.SelectedIndex;
                 _settings.SelectedId = selectedItem.id;

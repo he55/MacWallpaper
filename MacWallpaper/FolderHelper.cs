@@ -7,8 +7,8 @@ namespace MacWallpaper
 {
     public class FolderHelper
     {
-        public static string DownloadPath;
-        public static string ImageCachePath;
+        public static string DownloadPath {  get; private set; }
+        public static string ImageCachePath {  get; private set; }
 
         public static void CreateFolder()
         {
