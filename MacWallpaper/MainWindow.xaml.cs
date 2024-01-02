@@ -43,7 +43,7 @@ namespace MacWallpaper
 
             if (_settings.FirstRun)
             {
-                _notifyIcon.ShowBalloonTip(1000, "", $"{Constants.ProjectName} 已被最小化到系统托盘。", System.Windows.Forms.ToolTipIcon.None);
+                _notifyIcon.ShowBalloonTip(1000, "", I18nWpf.GetString("LHideTip"), System.Windows.Forms.ToolTipIcon.None);
                 _settings.FirstRun = false;
             }
 
