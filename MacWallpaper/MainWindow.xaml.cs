@@ -40,6 +40,13 @@ namespace MacWallpaper
         {
             e.Cancel = true;
             this.Hide();
+
+            if (_settings.FirstRun)
+            {
+                _notifyIcon.ShowBalloonTip(1000, "", $"{Constants.ProjectName} 已被最小化到系统托盘。", ToolTipIcon.None);
+                _settings.FirstRun = false;
+            }
+
             Settings.Save();
         }
 
