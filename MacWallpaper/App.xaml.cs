@@ -1,6 +1,5 @@
 ﻿using DreamScene2;
 using System;
-using System.Net;
 using System.Windows;
 
 namespace MacWallpaper
@@ -14,8 +13,6 @@ namespace MacWallpaper
         {
             if (Settings.Load().Language == "zh_CN")
                 Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("pack://application:,,,/i18n/zh_CN.xaml") });
-
-            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
         }
     }
 }

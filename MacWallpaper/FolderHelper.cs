@@ -1,4 +1,4 @@
-﻿using ModernWpf.Controls;
+﻿using DreamScene2;
 using System;
 using System.IO;
 using System.Linq;
@@ -13,10 +13,10 @@ namespace MacWallpaper
         public static void CreateFolder()
         {
             string myDocuments = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            DownloadPath = Path.Combine(myDocuments, "4kwallpaper");
+            DownloadPath = Path.Combine(myDocuments, Constants.ProjectName);
 
             string applicationData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            ImageCachePath = Path.Combine(applicationData, @"4kwallpaper\images");
+            ImageCachePath = Path.Combine(applicationData, Constants.ProjectName, "images");
 
             if (!Directory.Exists(DownloadPath))
                 Directory.CreateDirectory(DownloadPath);
@@ -28,8 +28,7 @@ namespace MacWallpaper
         public static string GetFilePathForURL(string url, string dir)
         {
             string fileName = new Uri(url).Segments.Last();
-            string filePath = Path.Combine(dir, fileName);
-            return filePath;
+            return Path.Combine(dir, fileName);
         }
     }
 }

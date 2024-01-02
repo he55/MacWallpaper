@@ -30,6 +30,8 @@ namespace MacWallpaper
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+
             FolderHelper.CreateFolder();
             LoadData();
             DownloadImages(_assets);
@@ -66,7 +68,7 @@ namespace MacWallpaper
 
             _notifyIcon = new System.Windows.Forms.NotifyIcon();
             _notifyIcon.ContextMenuStrip = contextMenuStrip1;
-            _notifyIcon.Text = "4kwallpaper";
+            _notifyIcon.Text = Constants.ProjectName;
             _notifyIcon.Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Windows.Forms.Application.ExecutablePath);
             _notifyIcon.DoubleClick += delegate { ShowWindow(); };
             _notifyIcon.Visible = true;
@@ -86,7 +88,7 @@ namespace MacWallpaper
 
             ShowWindow();
 
-            if (MessageBox.Show(I18nWpf.GetString("LCancelDownloadConfirmTip"), "4kwallpaper", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+            if (MessageBox.Show(I18nWpf.GetString("LCancelDownloadConfirmTip"), Constants.ProjectName, MessageBoxButton.OKCancel) == MessageBoxResult.OK)
             {
                 foreach (WallpaperAsset asset in assets)
                 {

@@ -33,9 +33,7 @@ namespace DreamScene2
             {
                 s_appPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ProjectName);
                 if (!Directory.Exists(s_appPath))
-                {
                     Directory.CreateDirectory(s_appPath);
-                }
             }
             return Path.Combine(s_appPath, subPath);
         }
