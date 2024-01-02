@@ -3,11 +3,11 @@ using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace DreamScene2
+namespace MacWallpaper
 {
     public static class Helper
     {
-        const string ProjectName = "DreamScene2";
+        const string ProjectName = nameof(MacWallpaper);
         const string STARTUP_KEY = @"Software\Microsoft\Windows\CurrentVersion\Run";
         static string s_appPath;
 

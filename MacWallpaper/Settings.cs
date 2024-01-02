@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Xml.Serialization;
 
-namespace DreamScene2
+namespace MacWallpaper
 {
     public class Settings
     {

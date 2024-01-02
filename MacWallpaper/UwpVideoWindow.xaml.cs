@@ -11,7 +11,7 @@ namespace MacWallpaper
     /// </summary>
     public partial class UwpVideoWindow : Window
     {
-        MediaPlayerElement mediaPlayerElement;
+        MediaPlayerElement _mediaPlayerElement;
 
         public UwpVideoWindow()
         {
@@ -30,15 +30,15 @@ namespace MacWallpaper
 
         private void WindowsXamlHost_ChildChanged(object sender, EventArgs e)
         {
-            mediaPlayerElement = (MediaPlayerElement)((WindowsXamlHost)sender).Child;
-            if (mediaPlayerElement == null)
+            _mediaPlayerElement = (MediaPlayerElement)((WindowsXamlHost)sender).Child;
+            if (_mediaPlayerElement == null)
                 return;
 
-            mediaPlayerElement.Stretch = Windows.UI.Xaml.Media.Stretch.UniformToFill;
-            mediaPlayerElement.AutoPlay = true;
-            mediaPlayerElement.MediaPlayer.IsLoopingEnabled = true;
-            mediaPlayerElement.PointerReleased += MediaPlayerElement_PointerReleased;
-            mediaPlayerElement.Source = MediaSource.CreateFromUri(new Uri(Source));
+            _mediaPlayerElement.Stretch = Windows.UI.Xaml.Media.Stretch.UniformToFill;
+            _mediaPlayerElement.AutoPlay = true;
+            _mediaPlayerElement.MediaPlayer.IsLoopingEnabled = true;
+            _mediaPlayerElement.PointerReleased += MediaPlayerElement_PointerReleased;
+            _mediaPlayerElement.Source = MediaSource.CreateFromUri(new Uri(Source));
         }
 
         private void MediaPlayerElement_PointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)

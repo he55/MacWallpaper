@@ -1,4 +1,4 @@
-﻿namespace DreamScene2
+﻿namespace MacWallpaper
 {
     public static class Constants
     {
